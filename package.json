@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "type-check": "tsc --noEmit"
-  },
+  "preinstall": "npm install --legacy-peer-deps",
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "type-check": "tsc --noEmit"
+},
   "dependencies": {
     "@gsap/react": "^2.1.1",
     "@hookform/resolvers": "^3.9.1",
