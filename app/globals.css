@@ -181,3 +181,10 @@ body {
   background: #c3955d;
   border-radius: 100px;
 }
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
