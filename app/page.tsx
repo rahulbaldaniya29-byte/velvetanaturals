@@ -7,7 +7,7 @@ export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
-  
+  const [currentImage, setCurrentImage] = useState(0);
 
 const [messageName, setMessageName] = useState('');
 const [messageEmail, setMessageEmail] = useState('');
@@ -40,6 +40,19 @@ const isValidEmail =
   }, 2200);
 
   return () => clearTimeout(timer);
+
+}, []);
+useEffect(() => {
+
+  const interval = setInterval(() => {
+
+    setCurrentImage((prev) =>
+      prev === 0 ? 1 : 0
+    );
+
+  }, 2500);
+
+  return () => clearInterval(interval);
 
 }, []);
 
@@ -193,10 +206,8 @@ if (loading) {
 
 
       {/* NAVBAR */}
-      <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-2xl bg-white/10 border-b border-white/20 shadow-lg transition-all duration-300">
-
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-
+<header className="fixed top-0 left-0 w-full z-[9999] bg-[#173926]/95 border-b border-white/10 shadow-lg">
+<div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
           {/* LOGO */}
           <h1 className="text-2xl md:text-3xl font-bold text-[#d6b37a]">
             Velveta
@@ -270,7 +281,7 @@ if (loading) {
       {/* HERO SECTION */}
       <section
   id="home"
-  className="hero-grid relative min-h-screen overflow-hidden flex items-center justify-center px-6 bg-[linear-gradient(-45deg,#173926,#1f4d35,#0d2016,#2f5d43)] bg-[length:400%_400%] animate-[gradientMove_12s_ease_infinite]"
+  className="hero-grid relative min-h-screen overflow-hidden flex items-center justify-center px-6 pt-24 md:pt-0 bg-[linear-gradient(-45deg,#173926,#1f4d35,#0d2016,#2f5d43)] bg-[length:400%_400%] animate-[gradientMove_12s_ease_infinite]"
 >
 
         {/* Glow Effects */}
@@ -282,9 +293,7 @@ if (loading) {
 
           {/* LEFT */}
           <div>
-            <span className="hidden md:block px-5 py-2 rounded-full border border-white/20 text-white/70 text-sm tracking-[3px] uppercase bg-white/5 backdrop-blur-md">
-              Premium Ayurvedic Wellness
-            </span>
+           
 
             <h1 className="fade-up mt-8 text-4xl sm:text-5xl md:text-7xl font-black leading-tight text-white animate-[heroText_1.2s_ease-out]">
               Natural <span className="text-[#c3955d]">Luxury</span> <br />
@@ -310,11 +319,15 @@ if (loading) {
           <div className="relative flex justify-center">
             <div className="absolute w-[450px] h-[450px] rounded-full bg-[#ffffff10] blur-3xl"></div>
             <Image
-              src="/product1.jpeg"
-              alt="Velveta Product"
-width={320}
-height={320}
-              className="object-contain h-auto relative z-10 drop-shadow-[0_20px_80px_rgba(0,0,0,0.6)] floating-animation animate-[float_5s_ease-in-out_infinite]"
+  src={
+    currentImage === 0
+      ? '/product1.jpeg'
+      : '/product2.jpeg'
+  }
+  alt='Velveta Product'
+width={380}
+height={380}
+              className="object-contain h-auto relative z-10 transition-all duration-700 drop-shadow-[0_20px_80px_rgba(0,0,0,0.6)] floating-animation animate-[float_5s_ease-in-out_infinite]"
               style={{
   transform: `translate(${heroOffset.x}px, ${heroOffset.y}px)`,
 }}
