@@ -22,10 +22,35 @@ const [heroOffset, setHeroOffset] = useState({
 });
 useEffect(() => {
 
+const updateCart = () => {
+
   const cart =
     JSON.parse(localStorage.getItem('cart') || '[]');
 
-  setCartCount(cart.length);
+  const totalItems = cart.reduce(
+    (acc: number, item: any) =>
+      acc + (item.quantity || 1),
+    0
+  );
+
+  setCartCount(totalItems);
+
+};
+  updateCart();
+
+  window.addEventListener(
+    'cartUpdated',
+    updateCart
+  );
+
+  return () => {
+
+    window.removeEventListener(
+      'cartUpdated',
+      updateCart
+    );
+
+  };
 
 }, []);
 
@@ -429,8 +454,17 @@ localStorage.setItem(
   JSON.stringify(existingCart)
 );
 
-setCartCount(existingCart.length);
+const totalItems = existingCart.reduce(
+  (acc: number, item: any) =>
+    acc + (item.quantity || 1),
+  0
+);
 
+setCartCount(totalItems);
+
+window.dispatchEvent(
+  new Event('cartUpdated')
+);
 
 
   }}
@@ -520,7 +554,17 @@ localStorage.setItem(
   'cart',
   JSON.stringify(existingCart)
 );
-setCartCount(existingCart.length);
+const totalItems = existingCart.reduce(
+  (acc: number, item: any) =>
+    acc + (item.quantity || 1),
+  0
+);
+
+setCartCount(totalItems);
+
+window.dispatchEvent(
+  new Event('cartUpdated')
+);
   }}
 
   className="relative z-[999]  mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"

@@ -5,6 +5,22 @@ import { useEffect, useState } from 'react';
 export default function CartPage() {
 
   const [cart, setCart] = useState<any[]>([]);
+  useEffect(() => {
+
+  const updateCartCount = () => {
+
+    const storedCart =
+      JSON.parse(localStorage.getItem('cart') || '[]');
+
+    window.dispatchEvent(
+      new Event('cartUpdated')
+    );
+
+  };
+
+  updateCartCount();
+
+}, [cart]);
 
   useEffect(() => {
 
@@ -91,6 +107,9 @@ if (updatedCart[index].quantity <= 0) {
         'cart',
         JSON.stringify(updatedCart)
       );
+      window.dispatchEvent(
+  new Event('cartUpdated')
+);
 
     }}
 
@@ -117,6 +136,9 @@ updatedCart[index].quantity =
         'cart',
         JSON.stringify(updatedCart)
       );
+      window.dispatchEvent(
+  new Event('cartUpdated')
+);
 
     }}
 
@@ -137,6 +159,9 @@ updatedCart[index].quantity =
         'cart',
         JSON.stringify(updatedCart)
       );
+      window.dispatchEvent(
+  new Event('cartUpdated')
+);
 
     }}
 
