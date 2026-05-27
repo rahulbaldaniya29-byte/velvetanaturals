@@ -55,10 +55,25 @@ const totalAmount =
       localStorage.getItem('checkoutCart') || '[]'
     );
 
+  if (storedCart.length === 0) {
+
+    window.location.href = '/cart';
+
+    return;
+
+  }
+
   setCart(storedCart);
 
 }, []);
   const handlePayment = async () => {
+    if (cart.length === 0) {
+
+  setWarning('Cart is empty 😄');
+
+  return;
+
+}
     if (
   !name ||
   !phone ||
