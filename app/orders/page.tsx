@@ -37,7 +37,7 @@ export default function OrdersPage() {
 
         <div className="text-center">
 
-          <h1 className="text-5xl font-black text-[#173926]">
+          <h1 className="text-3xl md:text-5xl font-black text-[#173926]">
             My Orders
           </h1>
 
@@ -47,7 +47,7 @@ export default function OrdersPage() {
 
         </div>
 
-        <div className="mt-12 bg-white rounded-[35px] p-8 shadow-xl border border-[#e5ebe7]">
+        <div className="mt-12 bg-white rounded-[35px] p-5 md:p-8 shadow-xl border border-[#e5ebe7]">
 
           <div className="flex flex-col md:flex-row gap-4">
 
@@ -75,7 +75,7 @@ export default function OrdersPage() {
 
             <div
               key={order.id}
-              className="bg-white rounded-[30px] p-8 shadow-xl border border-[#e5ebe7]"
+              className="bg-white rounded-[30px] p-5 md:p-8 shadow-xl border border-[#e5ebe7]"
             >
 
               <div className="flex items-center justify-between flex-wrap gap-5">
@@ -107,7 +107,7 @@ export default function OrdersPage() {
 >
   {order.status}
 </div>
-<div className="mt-8 flex flex-wrap gap-4">
+<div className="mt-8 flex flex-wrap gap-2">
 
   {statusSteps.map((step, index) => {
 
@@ -122,8 +122,9 @@ export default function OrdersPage() {
       <div
         key={step}
         className={`
-          px-5
-          py-3
+          px-3 md:px-5
+py-2 md:py-3
+text-sm md:text-base
           rounded-full
           text-white
           font-semibold

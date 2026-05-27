@@ -2,19 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from 'recharts';
 import * as XLSX from 'xlsx';
-
-// @ts-ignore: No type declarations for 'file-saver'
-const { saveAs } = require('file-saver');
+// @ts-ignore: Missing type declarations for 'file-saver'
+import { saveAs } from 'file-saver';
 export default function AdminPage() {
 const [search, setSearch] = useState('');
   const [orders, setOrders] = useState<any[]>([]);
@@ -34,10 +24,6 @@ const pendingOrders = orders.filter(
 const totalCustomers = new Set(
   orders.map((order) => order.customer_phone)
 ).size;
-const analyticsData = orders.map((order) => ({
-  date: order.order_date,
-  revenue: order.amount,
-}));
 
   useEffect(() => {
 
@@ -135,29 +121,13 @@ const filteredOrders = orders.filter((order) =>
 );
   return (
 
-    <main className="min-h-screen bg-[#f7f5ef] p-10">
+    <main className="min-h-screen bg-[#f7f5ef] p-5 md:p-10">
 
-     <div className="flex items-center justify-between mb-10">
-      <button
-  onClick={exportOrders}
-  className="
-    px-6
-    py-4
-    rounded-3xl
-    bg-[#173926]
-    hover:bg-[#28543c]
-    text-white
-    font-semibold
-    transition-all
-    duration-300
-    shadow-xl
-  "
->
-  Export Excel
-</button>
+     <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 mb-10">
+      
 
   <div>
-    <h1 className="text-5xl font-black text-[#173926]">
+    <h1 className="text-3xl md:text-5xl font-black text-[#173926]">
       Velveta Admin
     </h1>
 
@@ -167,7 +137,7 @@ const filteredOrders = orders.filter((order) =>
   </div>
 
   <div className="bg-[#173926] text-white px-6 py-4 rounded-3xl">
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-10 mb-10">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mt-10 mb-10">
 
   <div className="bg-white rounded-[30px] p-6 shadow-xl border border-[#e5ebe7]">
     <p className="text-[#5a685f] text-sm">
@@ -242,59 +212,13 @@ const filteredOrders = orders.filter((order) =>
   />
 
 </div>
-<div className="
-  bg-white
-  rounded-[35px]
-  p-8
-  shadow-xl
-  border
-  border-[#e5ebe7]
-  mb-10
-">
-
-  <h2 className="text-3xl font-bold text-[#173926]">
-    Sales Analytics
-  </h2>
-
-  <p className="mt-2 text-[#5a685f]">
-    Revenue performance overview
-  </p>
-
-  <div className="h-[350px] mt-8">
-
-    <ResponsiveContainer width="100%" height="100%">
-
-      <LineChart data={analyticsData}>
-
-        <CartesianGrid strokeDasharray="3 3" />
-
-        <XAxis dataKey="date" />
-
-        <YAxis />
-
-        <Tooltip />
-
-        <Line
-          type="monotone"
-          dataKey="revenue"
-          stroke="#173926"
-          strokeWidth={4}
-        />
-
-      </LineChart>
-
-    </ResponsiveContainer>
-
-  </div>
-
-</div>
 
       <div className="grid gap-6">
 {filteredOrders.map((order) => (
 
 <div
   key={order.id}
-  className="bg-white rounded-[30px] p-8 shadow-xl border border-[#e5ebe7]"
+  className="bg-white rounded-[30px] p-5 md:p-8 shadow-xl border border-[#e5ebe7]"
 >
 
   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -372,7 +296,7 @@ const filteredOrders = orders.filter((order) =>
 
   </div>
 
-  <div className="mt-6 flex items-center justify-between flex-wrap gap-4">
+  <div className="mt-6 flex flex-col md:flex-row md:items-center justify-between gap-5 flex-wrap gap-4">
 
     <div>
       <p className="text-sm text-[#5a685f]">

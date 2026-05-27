@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 import { useEffect, useState } from 'react';
-
 export default function HomePage() {
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -212,25 +211,24 @@ if (loading) {
           </nav>
 
           {/* RIGHT SIDE */}
-          <div className="flex items-center gap-4">
-
-            {/* MOBILE MENU BUTTON */}
+<div className="flex items-center gap-2 md:gap-4">
+              {/* MOBILE MENU BUTTON */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden text-white text-3xl"
+              className="md:hidden text-white text-2xl md:text-3xl"
             >
               {menuOpen ? '✕' : '☰'}
             </button>
 
 
-            <button className="px-5 py-2 rounded-full bg-[#4f7c5d] text-white hover:bg-[#5e9170] transition">
+            <button className="hidden md:block px-5 py-2 rounded-full bg-[#4f7c5d] text-white hover:bg-[#5e9170] transition">
               Shop Now
             </button>
             <button
   onClick={() => {
     window.location.href = '/cart';
   }}
-  className="relative z-[999] px-5 py-2 rounded-full bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300"
+  className="relative z-[999] px-3 md:px-5 py-2 text-sm md:text-base rounded-full bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300"
 >
   🛒 Cart
 
@@ -245,7 +243,7 @@ if (loading) {
   onClick={() => {
     window.location.href = '/orders';
   }}
-  className="relative z-[999] px-5 py-2 rounded-full bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300"
+  className="relative z-[999] px-3 md:px-5 py-2 text-sm md:text-base rounded-full bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300"
 >
   My Orders
 </button>
@@ -280,11 +278,11 @@ if (loading) {
         <div className="absolute bottom-[-120px] right-[-120px] w-[400px] h-[400px] bg-[#c3955d]/20 rounded-full blur-3xl animate-pulse"></div>
 
         {/* Content */}
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-14 items-center relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center relative z-10">
 
           {/* LEFT */}
           <div>
-            <span className="px-5 py-2 rounded-full border border-white/20 text-white/70 text-sm tracking-[3px] uppercase bg-white/5 backdrop-blur-md">
+            <span className="hidden md:block px-5 py-2 rounded-full border border-white/20 text-white/70 text-sm tracking-[3px] uppercase bg-white/5 backdrop-blur-md">
               Premium Ayurvedic Wellness
             </span>
 
@@ -298,7 +296,7 @@ if (loading) {
               science, and luxury wellness experience for modern lifestyles.
             </p>
 
-            <div className="flex flex-wrap gap-5 mt-10">
+            <div className="flex flex-col sm:flex-row gap-4 mt-10">
               <button className="glow-button relative overflow-hidden px-8 py-4 rounded-full bg-[#c3955d] hover:bg-[#d9ab73] text-black font-semibold transition-all duration-300 hover:scale-105 shadow-2xl before:absolute before:top-0 before:left-[-100%] before:w-full before:h-full before:bg-white/30 before:skew-x-12 before:transition-all before:duration-700 hover:before:left-[200%]">
                 Shop Now
               </button>
@@ -314,8 +312,8 @@ if (loading) {
             <Image
               src="/product1.jpeg"
               alt="Velveta Product"
-              width={450}
-              height={450}
+width={320}
+height={320}
               className="object-contain h-auto relative z-10 drop-shadow-[0_20px_80px_rgba(0,0,0,0.6)] floating-animation animate-[float_5s_ease-in-out_infinite]"
               style={{
   transform: `translate(${heroOffset.x}px, ${heroOffset.y}px)`,
@@ -358,14 +356,14 @@ if (loading) {
                 />
               </div>
 
-              <div className="p-8">
-                <h3 className="text-3xl font-bold text-[#173926]">Arogya Churn</h3>
+              <div className="p-5 md:p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-[#173926]">Arogya Churn</h3>
                 <p className="mt-4 text-[#5a685f] leading-relaxed">
                   Herbal Ayurvedic formula designed to improve digestion,
                   immunity, detoxification, and natural daily energy.
                 </p>
-                <div className="mt-8">
-                  <span className="text-3xl font-bold text-[#c3955d]">₹799</span>
+                <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+                  <span className="text-2xl md:text-3xl font-bold text-[#c3955d]">₹799</span>
                   
          <button
   onClick={() => {
@@ -384,7 +382,7 @@ localStorage.setItem(
 window.location.href = '/checkout';
   }}
 
-  className="relative z-[999] ml-5 mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
+  className="relative z-[999]  mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
 >
   Buy Now
 </button>
@@ -424,7 +422,7 @@ setCartCount(existingCart.length);
 
   }}
 
-  className="relative z-[999] ml-5 mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
+  className="relative z-[999]  mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
 >
   Add To Cart
 </button>
@@ -448,14 +446,14 @@ setCartCount(existingCart.length);
                 />
               </div>
 
-              <div className="p-8">
-                <h3 className="text-3xl font-bold text-[#173926]">B12 Super Food</h3>
+              <div className="p-5 md:p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-[#173926]">B12 Super Food</h3>
                 <p className="mt-4 text-[#5a685f] leading-relaxed">
                   Advanced herbal nutrition blend supporting stamina,
                   energy, immunity, and complete body wellness naturally.
                 </p>
-                <div className="mt-8">
-                  <span className="text-3xl font-bold text-[#c3955d]">₹999</span>
+                <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+                  <span className="text-2xl md:text-3xl font-bold text-[#c3955d]">₹999</span>
                   
          <button
   onClick={() => {
@@ -475,7 +473,7 @@ window.location.href = '/checkout';
 
   }}
 
-  className="relative z-[999] ml-5 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
+  className="relative z-[999] px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
 >
   Buy Now
 </button>
@@ -512,7 +510,7 @@ localStorage.setItem(
 setCartCount(existingCart.length);
   }}
 
-  className="relative z-[999] ml-5 mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
+  className="relative z-[999]  mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
 >
   Add To Cart
 </button>
@@ -543,7 +541,7 @@ setCartCount(existingCart.length);
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-            <div className="bg-white rounded-[30px] p-10 shadow-xl border border-[#e5ebe7] hover:-translate-y-2 transition-all duration-500">
+            <div className="bg-white rounded-[30px] p-6 md:p-10 shadow-xl border border-[#e5ebe7] hover:-translate-y-2 transition-all duration-500">
               <div className="w-20 h-20 rounded-full bg-[#e4efe7] flex items-center justify-center text-4xl mb-8">🌿</div>
               <h3 className="text-2xl font-bold text-[#173926]">100% Natural</h3>
               <p className="mt-5 text-[#5a685f] leading-relaxed">
@@ -552,7 +550,7 @@ setCartCount(existingCart.length);
               </p>
             </div>
 
-            <div className="bg-white rounded-[30px] p-10 shadow-xl border border-[#e5ebe7] hover:-translate-y-2 transition-all duration-500">
+            <div className="bg-white rounded-[30px] p-6 md:p-10 shadow-xl border border-[#e5ebe7] hover:-translate-y-2 transition-all duration-500">
               <div className="w-20 h-20 rounded-full bg-[#f1e7d7] flex items-center justify-center text-4xl mb-8">✨</div>
               <h3 className="text-2xl font-bold text-[#173926]">Luxury Wellness</h3>
               <p className="mt-5 text-[#5a685f] leading-relaxed">
@@ -561,7 +559,7 @@ setCartCount(existingCart.length);
               </p>
             </div>
 
-            <div className="bg-white rounded-[30px] p-10 shadow-xl border border-[#e5ebe7] hover:-translate-y-2 transition-all duration-500">
+            <div className="bg-white rounded-[30px] p-6 md:p-10 shadow-xl border border-[#e5ebe7] hover:-translate-y-2 transition-all duration-500">
               <div className="w-20 h-20 rounded-full bg-[#e4efe7] flex items-center justify-center text-4xl mb-8">🛡️</div>
               <h3 className="text-2xl font-bold text-[#173926]">Trusted Formula</h3>
               <p className="mt-5 text-[#5a685f] leading-relaxed">
@@ -579,14 +577,14 @@ setCartCount(existingCart.length);
         <div className="absolute top-[-100px] left-[-100px] w-[300px] h-[300px] bg-[#c3955d]/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-[-120px] right-[-120px] w-[350px] h-[350px] bg-[#4fa46d]/20 rounded-full blur-3xl"></div>
 
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center relative z-10">
 
           {/* LEFT */}
           <div>
-            <span className="px-5 py-2 rounded-full bg-white/10 border border-white/10 text-white/70 text-sm tracking-[3px] uppercase backdrop-blur-md">
+            <span className="hidden md:block px-5 py-2 rounded-full bg-white/10 border border-white/10 text-white/70 text-sm tracking-[3px] uppercase backdrop-blur-md">
               Contact Us
             </span>
-            <h2 className="mt-8 text-4xl md:text-6xl font-black leading-tight">
+            <h2 className="mt-8 text-3xl md:text-6xl font-black leading-tight">
               Let's Build <br />
               Healthy Living Together
             </h2>
@@ -607,7 +605,7 @@ setCartCount(existingCart.length);
           </div>
 
           {/* RIGHT FORM */}
-          <div className="bg-white/10 backdrop-blur-2xl border border-white/10 rounded-[40px] p-10">
+          <div className="bg-white/10 backdrop-blur-2xl border border-white/10 rounded-[40px] p-5 md:p-10">
             <div className="space-y-5">
               <input
   type="text"

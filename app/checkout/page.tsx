@@ -180,8 +180,8 @@ localStorage.removeItem('checkoutCart');
   
 
   return (
-    <main className="min-h-screen bg-[#f7f5ef] py-20 px-6">
-      <style jsx>{`
+<main className="min-h-screen bg-[#f7f5ef] py-20 px-6 pb-40 md:pb-20">
+        <style jsx>{`
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -195,10 +195,10 @@ localStorage.removeItem('checkoutCart');
   }
 `}</style>
 
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 animate-[fadeInUp_0.8s_ease-out]">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 animate-[fadeInUp_0.8s_ease-out]">
 
         {/* PRODUCT */}
-        <div className="bg-white rounded-[35px] p-10 shadow-xl">
+        <div className="bg-white rounded-[35px] p-5 md:p-10 shadow-xl">
 
           <div className="space-y-6">
 
@@ -206,7 +206,7 @@ localStorage.removeItem('checkoutCart');
 
     <div
       key={index}
-      className="flex items-center gap-5 bg-[#f7f5ef] p-5 rounded-3xl"
+      className="flex flex-col sm:flex-row items-center gap-5 bg-[#f7f5ef] p-5 rounded-3xl"
     >
 
       <Image
@@ -223,7 +223,7 @@ localStorage.removeItem('checkoutCart');
 
       <div className="flex-1">
 
-        <h2 className="text-2xl font-bold text-[#173926]">
+        <h2 className="text-xl md:text-2xl font-bold text-[#173926]">
           {item.name}
         </h2>
 
@@ -287,7 +287,7 @@ localStorage.removeItem('checkoutCart');
 </div>
       </div>
 
-      <h3 className="text-2xl font-bold text-[#c3955d]">
+      <h3 className="text-xl md:text-2xl font-bold text-[#c3955d]">
         ₹{item.price * item.quantity}
       </h3>
 
@@ -297,7 +297,7 @@ localStorage.removeItem('checkoutCart');
 
 </div>
 
-          <h2 className="mt-4 text-3xl font-bold text-[#c3955d]">
+          <h2 className="mt-4 text-2xl md:text-3xl font-bold text-[#c3955d]">
             ₹{totalAmount}
           </h2>
           <div className="mt-8 bg-[#f7f5ef] rounded-3xl p-6 space-y-4">
@@ -325,11 +325,11 @@ localStorage.removeItem('checkoutCart');
 
   <div className="border-t border-[#dfe7e1] pt-4 flex items-center justify-between">
 
-    <span className="text-2xl font-bold text-[#173926]">
+    <span className="text-xl md:text-2xl font-bold text-[#173926]">
       Total
     </span>
 
-    <span className="text-3xl font-black text-[#173926]">
+    <span className="text-2xl md:text-3xl font-black text-[#173926]">
       ₹{totalAmount}
     </span>
 
@@ -340,9 +340,9 @@ localStorage.removeItem('checkoutCart');
         </div>
 
         {/* FORM */}
-        <div className="bg-white rounded-[35px] p-10 shadow-xl">
+        <div className="bg-white rounded-[35px] p-5 md:p-10 shadow-xl">
 
-          <h2 className="text-3xl font-bold text-[#173926] mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#173926] mb-8">
             Delivery Details
           </h2>
 

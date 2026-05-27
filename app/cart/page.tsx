@@ -46,9 +46,9 @@ const finalTotal = total + deliveryCharge;
 
   return (
 
-    <main className="min-h-screen bg-[#fdfcf8] p-10">
+    <main className="min-h-screen bg-[#fdfcf8] p-5 md:p-10">
 
-      <h1 className="text-5xl font-black text-[#173926] mb-10">
+      <h1 className="text-3xl md:text-5xl font-black text-[#173926] mb-10">
         Your Cart
       </h1>
 
@@ -58,7 +58,7 @@ const finalTotal = total + deliveryCharge;
 
           <div
             key={index}
-            className="bg-white rounded-[30px] p-8 shadow-xl border border-[#e5ebe7]"
+            className="bg-white rounded-[30px] p-5 md:p-8 shadow-xl border border-[#e5ebe7]"
           >
 
             <h2 className="text-2xl font-bold text-[#173926]">
@@ -69,7 +69,7 @@ const finalTotal = total + deliveryCharge;
   ₹{item.price * (item.quantity || 1)}  
 </p>
 
-<div className="mt-5 flex items-center gap-4">
+<div className="mt-5 flex flex-wrap items-center gap-3">
 
   <button
     onClick={() => {
@@ -154,7 +154,7 @@ updatedCart[index].quantity =
 
       <div className="mt-10">
 
-        <div className="bg-white rounded-[30px] p-8 shadow-xl border border-[#e5ebe7] max-w-xl ml-auto">
+        <div className="bg-white rounded-[30px] p-5 md:p-8 shadow-xl border border-[#e5ebe7] max-w-xl ml-auto">
 
   <div className="flex items-center justify-between border-b border-[#e5ebe7] pb-5">
 
@@ -186,7 +186,7 @@ updatedCart[index].quantity =
       Final Total
     </p>
 
-    <p className="text-4xl font-black text-[#173926]">
+    <p className="text-3xl md:text-4xl font-black text-[#173926]">
       ₹{finalTotal}
     </p>
 
@@ -195,7 +195,7 @@ updatedCart[index].quantity =
 </div>
 
       </div>
-      <div className="mt-14 flex justify-end">
+      <div className="mt-14 flex justify-center md:justify-end">
 
   <button
     onClick={() => {
@@ -209,7 +209,7 @@ updatedCart[index].quantity =
 
     }}
 
-    className="px-10 py-5 rounded-full bg-[#173926] hover:bg-[#28543c] text-white text-lg font-semibold transition-all duration-300 shadow-xl hover:scale-105"
+    className="px-6 md:px-10 py-4 md:py-5 rounded-full bg-[#173926] hover:bg-[#28543c] text-white text-lg font-semibold transition-all duration-300 shadow-xl hover:scale-105"
   >
     Proceed To Checkout
   </button>
