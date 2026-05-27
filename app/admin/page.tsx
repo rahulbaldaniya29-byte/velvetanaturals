@@ -2,10 +2,42 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from 'recharts';
+import * as XLSX from 'xlsx';
 
+// @ts-ignore: No type declarations for 'file-saver'
+const { saveAs } = require('file-saver');
 export default function AdminPage() {
-
+const [search, setSearch] = useState('');
   const [orders, setOrders] = useState<any[]>([]);
+  const totalRevenue = orders.reduce(
+  (acc, order) => acc + order.amount,
+  0
+);
+
+const deliveredOrders = orders.filter(
+  (order) => order.status === 'Delivered'
+).length;
+
+const pendingOrders = orders.filter(
+  (order) => order.status !== 'Delivered'
+).length;
+
+const totalCustomers = new Set(
+  orders.map((order) => order.customer_phone)
+).size;
+const analyticsData = orders.map((order) => ({
+  date: order.order_date,
+  revenue: order.amount,
+}));
 
   useEffect(() => {
 
@@ -25,12 +57,104 @@ export default function AdminPage() {
     }
 
   }
+  function exportOrders() {
 
+  const formattedOrders = orders.map((order) => ({
+
+    Product: order.product_name,
+
+    Amount: order.amount,
+
+    Quantity: order.quantity,
+
+    Customer: order.customer_name,
+
+    Phone: order.customer_phone,
+
+    Email: order.customer_email,
+
+    Address: order.customer_address,
+
+    City: order.customer_city,
+
+    State: order.customer_state,
+
+    Pincode: order.customer_pincode,
+
+    Status: order.status,
+
+    PaymentID: order.payment_id,
+
+    Date: order.order_date,
+
+  }));
+
+  const worksheet =
+    XLSX.utils.json_to_sheet(formattedOrders);
+
+  const workbook =
+    XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(
+    workbook,
+    worksheet,
+    'Orders'
+  );
+
+  const excelBuffer =
+    XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    });
+
+  const fileData = new Blob(
+    [excelBuffer],
+    {
+      type:
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+    }
+  );
+
+  saveAs(
+    fileData,
+    'velveta-orders.xlsx'
+  );
+
+}
+const filteredOrders = orders.filter((order) =>
+  order.customer_name
+    ?.toLowerCase()
+    .includes(search.toLowerCase()) ||
+
+  order.customer_phone
+    ?.includes(search) ||
+
+  order.product_name
+    ?.toLowerCase()
+    .includes(search.toLowerCase())
+);
   return (
 
     <main className="min-h-screen bg-[#f7f5ef] p-10">
 
      <div className="flex items-center justify-between mb-10">
+      <button
+  onClick={exportOrders}
+  className="
+    px-6
+    py-4
+    rounded-3xl
+    bg-[#173926]
+    hover:bg-[#28543c]
+    text-white
+    font-semibold
+    transition-all
+    duration-300
+    shadow-xl
+  "
+>
+  Export Excel
+</button>
 
   <div>
     <h1 className="text-5xl font-black text-[#173926]">
@@ -43,6 +167,49 @@ export default function AdminPage() {
   </div>
 
   <div className="bg-[#173926] text-white px-6 py-4 rounded-3xl">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-10 mb-10">
+
+  <div className="bg-white rounded-[30px] p-6 shadow-xl border border-[#e5ebe7]">
+    <p className="text-[#5a685f] text-sm">
+      Total Revenue
+    </p>
+
+    <h2 className="mt-3 text-3xl font-black text-[#173926]">
+      ₹{totalRevenue}
+    </h2>
+  </div>
+
+  <div className="bg-white rounded-[30px] p-6 shadow-xl border border-[#e5ebe7]">
+    <p className="text-[#5a685f] text-sm">
+      Delivered
+    </p>
+
+    <h2 className="mt-3 text-3xl font-black text-green-600">
+      {deliveredOrders}
+    </h2>
+  </div>
+
+  <div className="bg-white rounded-[30px] p-6 shadow-xl border border-[#e5ebe7]">
+    <p className="text-[#5a685f] text-sm">
+      Pending
+    </p>
+
+    <h2 className="mt-3 text-3xl font-black text-orange-500">
+      {pendingOrders}
+    </h2>
+  </div>
+
+  <div className="bg-white rounded-[30px] p-6 shadow-xl border border-[#e5ebe7]">
+    <p className="text-[#5a685f] text-sm">
+      Customers
+    </p>
+
+    <h2 className="mt-3 text-3xl font-black text-[#173926]">
+      {totalCustomers}
+    </h2>
+  </div>
+
+</div>
     <h2 className="text-3xl font-bold">
       {orders.length}
     </h2>
@@ -53,10 +220,77 @@ export default function AdminPage() {
   </div>
 
 </div>
+<div className="mb-10">
+
+  <input
+    type="text"
+    placeholder="Search customer, phone or product..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="
+      w-full
+      bg-white
+      border
+      border-[#dfe7e1]
+      rounded-3xl
+      px-6
+      py-5
+      outline-none
+      text-[#173926]
+      shadow-lg
+    "
+  />
+
+</div>
+<div className="
+  bg-white
+  rounded-[35px]
+  p-8
+  shadow-xl
+  border
+  border-[#e5ebe7]
+  mb-10
+">
+
+  <h2 className="text-3xl font-bold text-[#173926]">
+    Sales Analytics
+  </h2>
+
+  <p className="mt-2 text-[#5a685f]">
+    Revenue performance overview
+  </p>
+
+  <div className="h-[350px] mt-8">
+
+    <ResponsiveContainer width="100%" height="100%">
+
+      <LineChart data={analyticsData}>
+
+        <CartesianGrid strokeDasharray="3 3" />
+
+        <XAxis dataKey="date" />
+
+        <YAxis />
+
+        <Tooltip />
+
+        <Line
+          type="monotone"
+          dataKey="revenue"
+          stroke="#173926"
+          strokeWidth={4}
+        />
+
+      </LineChart>
+
+    </ResponsiveContainer>
+
+  </div>
+
+</div>
 
       <div className="grid gap-6">
-
-        {orders.map((order) => (
+{filteredOrders.map((order) => (
 
 <div
   key={order.id}
@@ -151,33 +385,79 @@ export default function AdminPage() {
     </div>
 
     <div className="flex items-center gap-4 flex-wrap">
+      <button
+  onClick={async () => {
+
+    const confirmDelete =
+      confirm('Delete this order?');
+
+    if (!confirmDelete) return;
+
+    await supabase
+      .from('orders')
+      .delete()
+      .eq('id', order.id);
+
+    fetchOrders();
+
+  }}
+  className="
+    px-5
+    py-3
+    rounded-2xl
+    bg-red-500
+    hover:bg-red-600
+    text-white
+    font-semibold
+    transition-all
+    duration-300
+  "
+>
+  Delete
+</button>
 
   <div className="px-5 py-2 rounded-full bg-green-100 text-green-700 font-semibold">
     Paid
   </div>
 
   <select
+    aria-label="Order status"
     value={order.status}
     onChange={async (e) => {
 
+      const newStatus = e.target.value;
+
       await supabase
         .from('orders')
-        .update({
-          status: e.target.value,
-        })
+        .update({ status: newStatus })
         .eq('id', order.id);
 
       fetchOrders();
 
     }}
-    className="px-4 py-2 rounded-xl border border-[#dfe7e1] outline-none"
+    className="px-5 py-3 rounded-2xl bg-[#173926] text-white outline-none"
   >
-    <option>Pending</option>
-    <option>Packed</option>
-    <option>Shipped</option>
-    <option>Delivered</option>
-  </select>
 
+  <option value="Order Placed">
+  Order Placed
+</option>
+
+  <option value="Packed">
+    Packed
+  </option>
+
+  <option value="Shipped">
+    Shipped
+  </option>
+  <option value="Out For Delivery">
+  Out For Delivery
+</option>
+
+  <option value="Delivered">
+    Delivered
+  </option>
+
+</select>
 </div>
 
   </div>

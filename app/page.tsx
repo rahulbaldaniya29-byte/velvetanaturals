@@ -2,17 +2,13 @@
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 import { useEffect, useState } from 'react';
-declare global {
-  interface Window {
-    Razorpay: any;
-  }
-}
+
 export default function HomePage() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
-
+  const [cartCount, setCartCount] = useState(0);
+  
 
 const [messageName, setMessageName] = useState('');
 const [messageEmail, setMessageEmail] = useState('');
@@ -20,14 +16,21 @@ const [messageText, setMessageText] = useState('');
 
 const [sending, setSending] = useState(false);
 const [successMessage, setSuccessMessage] = useState('');
-const [cursorPosition, setCursorPosition] = useState({
-  x: 0,
-  y: 0,
-});
+
 const [heroOffset, setHeroOffset] = useState({
   x: 0,
   y: 0,
 });
+useEffect(() => {
+
+  const cart =
+    JSON.parse(localStorage.getItem('cart') || '[]');
+
+  setCartCount(cart.length);
+
+}, []);
+
+
 const isValidEmail =
   messageEmail.includes('@') &&
   messageEmail.includes('.');
@@ -45,11 +48,7 @@ useEffect(() => {
 
   const moveCursor = (e: MouseEvent) => {
 
-    setCursorPosition({
-      x: e.clientX,
-      y: e.clientY,
-
-    });
+    
 
     setHeroOffset({
   x: (e.clientX - window.innerWidth / 2) / 40,
@@ -66,6 +65,7 @@ useEffect(() => {
   };
 
 }, []);
+
 if (loading) {
 
   return (
@@ -94,9 +94,9 @@ if (loading) {
   return (
     <main className="min-h-screen bg-[#fdfcf8] relative overflow-hidden">
       <div className="fixed inset-0 opacity-[0.035] pointer-events-none z-0 bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')]"></div>
-      <div className="pointer-events-none fixed inset-0 z-[9999] hidden md:block">
+      <div className="fixed inset-0 z-0 hidden md:block pointer-events-none">
 
-  <div className="cursor-glow"></div>
+  <div className="cursor-glow pointer-events-none"></div>
 
 </div>
       <style jsx>{`
@@ -226,6 +226,29 @@ if (loading) {
             <button className="px-5 py-2 rounded-full bg-[#4f7c5d] text-white hover:bg-[#5e9170] transition">
               Shop Now
             </button>
+            <button
+  onClick={() => {
+    window.location.href = '/cart';
+  }}
+  className="relative z-[999] px-5 py-2 rounded-full bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300"
+>
+  🛒 Cart
+
+  {cartCount > 0 && (
+    <span className="absolute -top-2 -right-2 bg-[#c3955d] text-black text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+      {cartCount}
+    </span>
+  )}
+
+</button>
+<button
+  onClick={() => {
+    window.location.href = '/orders';
+  }}
+  className="relative z-[999] px-5 py-2 rounded-full bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300"
+>
+  My Orders
+</button>
 
           </div>
 
@@ -347,40 +370,61 @@ if (loading) {
          <button
   onClick={() => {
 
-    localStorage.setItem(
-      'selectedProduct',
-      JSON.stringify({
-        name: 'Arogya Churn',
-        price: 799,
-        image: '/product1.jpeg',
-      })
-    );
+localStorage.setItem(
+  'checkoutCart',
+  JSON.stringify([
+    {
+      name: 'Arogya Churn',
+      price: 799,
+      quantity: 1,
+    }
+  ])
+);
 
-    window.location.href = '/checkout';
-
+window.location.href = '/checkout';
   }}
 
-  className="relative z-50 ml-5 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
+  className="relative z-[999] ml-5 mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
 >
   Buy Now
 </button>
 <button
   onClick={() => {
 
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingCart =
+      JSON.parse(localStorage.getItem('cart') || '[]');
 
-    cart.push({
-      name: 'Arogya Churn',
-      price: 799,
-    });
+    const existingProductIndex =
+  existingCart.findIndex(
+    (item: any) => item.name === 'Arogya Churn'
+  );
 
-    localStorage.setItem('cart', JSON.stringify(cart));
+if (existingProductIndex !== -1) {
 
-    window.location.href = '/cart';
+  existingCart[existingProductIndex].quantity += 1;
+
+} else {
+
+  existingCart.push({
+    name: 'Arogya Churn',
+    price: 799,
+    quantity: 1,
+  });
+
+}
+
+localStorage.setItem(
+  'cart',
+  JSON.stringify(existingCart)
+);
+
+setCartCount(existingCart.length);
+
+
 
   }}
 
-  className="mt-4 ml-4 px-6 py-3 rounded-full border border-[#173926] text-[#173926] hover:bg-[#173926] hover:text-white transition-all duration-300"
+  className="relative z-[999] ml-5 mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
 >
   Add To Cart
 </button>
@@ -417,19 +461,21 @@ if (loading) {
   onClick={() => {
 
     localStorage.setItem(
-      'selectedProduct',
-      JSON.stringify({
-        name: 'B12 Super Food',
-        price: 999,
-        image: '/product2.jpeg',
-      })
-    );
+  'checkoutCart',
+  JSON.stringify([
+    {
+      name: 'B12 Super Food',
+      price: 999,
+      quantity: 1,
+    }
+  ])
+);
 
-    window.location.href = '/checkout';
+window.location.href = '/checkout';
 
   }}
 
-  className="relative z-50 ml-5 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
+  className="relative z-[999] ml-5 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
 >
   Buy Now
 </button>
@@ -437,20 +483,36 @@ if (loading) {
 <button
   onClick={() => {
 
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingCart =
+      JSON.parse(localStorage.getItem('cart') || '[]');
 
-    cart.push({
-      name: 'B12 Super Food',
-      price: 999,
-    });
+    const existingProductIndex =
+  existingCart.findIndex(
+    (item: any) => item.name === 'B12 Super Food'
+  );
 
-    localStorage.setItem('cart', JSON.stringify(cart));
+if (existingProductIndex !== -1) {
 
-    window.location.href = '/cart';
+  existingCart[existingProductIndex].quantity += 1;
 
+} else {
+
+  existingCart.push({
+    name: 'B12 Super Food',
+    price: 999,
+    quantity: 1,
+  });
+
+}
+
+localStorage.setItem(
+  'cart',
+  JSON.stringify(existingCart)
+);
+setCartCount(existingCart.length);
   }}
 
-  className="mt-4 ml-4 px-6 py-3 rounded-full border border-[#173926] text-[#173926] hover:bg-[#173926] hover:text-white transition-all duration-300"
+  className="relative z-[999] ml-5 mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
 >
   Add To Cart
 </button>
@@ -511,7 +573,6 @@ if (loading) {
           </div>
         </div>
       </section>
-
       {/* CONTACT SECTION */}
       <section id="contact" className="py-28 px-6 bg-[#173926] text-white relative overflow-hidden animate-[fadeUp_1s_ease-out]">
 

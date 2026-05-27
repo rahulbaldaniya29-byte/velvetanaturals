@@ -1,7 +1,9 @@
 // TypeScript may complain about side-effect CSS imports if no declaration is present.
 // @ts-ignore: Allow importing CSS modules/globals in Next.js layout
 import './globals.css'
+
 import Script from 'next/script'
+
 export const metadata = {
   title: 'Velveta Naturals | Premium Ayurvedic Wellness',
 
@@ -28,6 +30,7 @@ export default function RootLayout({
       <body>
 
         {children}
+  
 
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
