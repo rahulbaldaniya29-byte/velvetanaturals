@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import jsPDF from 'jspdf';
 import { supabase } from '@/lib/supabase';
 
 export default function OrdersPage() {
@@ -14,6 +15,37 @@ export default function OrdersPage() {
   'Out For Delivery',
   'Delivered',
 ];
+const downloadInvoice = (order: any) => {
+
+  const doc = new jsPDF();
+
+  doc.setFontSize(24);
+
+  doc.text('Velveta Naturals', 20, 20);
+
+  doc.setFontSize(14);
+
+  doc.text('Invoice', 20, 35);
+
+  doc.text(`Product: ${order.product_name}`, 20, 55);
+
+  doc.text(`Amount: ₹${order.amount}`, 20, 70);
+
+  doc.text(`Customer: ${order.customer_name}`, 20, 85);
+
+  doc.text(`Phone: ${order.customer_phone}`, 20, 100);
+
+  doc.text(`Address: ${order.customer_address}`, 20, 115);
+
+  doc.text(`Status: ${order.status}`, 20, 130);
+
+  doc.text(`Date: ${order.order_date}`, 20, 145);
+
+  doc.text(`Payment ID: ${order.payment_id}`, 20, 160);
+
+  doc.save(`invoice-${order.id}.pdf`);
+
+};
 
   const fetchOrders = async () => {
 
@@ -167,6 +199,23 @@ text-sm md:text-base
                   <p className="text-sm text-[#5a685f]">
                     Ordered Date
                   </p>
+                  <button
+  onClick={() => downloadInvoice(order)}
+  className="
+    mt-6
+    px-6
+    py-4
+    rounded-2xl
+    bg-[#173926]
+    hover:bg-[#28543c]
+    text-white
+    font-semibold
+    transition-all
+    duration-300
+  "
+>
+  Download Invoice
+</button>
 
                   <p className="mt-2 text-[#173926] font-semibold">
                     {order.order_date ? order.order_date : 'Date Not Available'}
