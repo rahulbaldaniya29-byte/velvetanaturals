@@ -157,6 +157,7 @@ customer_state: stateName,
               customer_pincode: pincode,
               payment_id: response.razorpay_payment_id,
               order_date: new Date().toLocaleDateString('en-IN'),
+              status: 'Order Placed',
             }
           ]);
           await fetch('/api/send-email', {

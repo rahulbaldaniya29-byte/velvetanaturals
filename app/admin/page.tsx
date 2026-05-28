@@ -362,9 +362,6 @@ const filteredOrders = orders.filter((order) =>
     className="px-5 py-3 rounded-2xl bg-[#173926] text-white outline-none"
   >
 
-  <option value="Order Placed">
-  Order Placed
-</option>
 
   <option value="Packed">
     Packed

@@ -29,7 +29,7 @@ const downloadInvoice = (order: any) => {
 
   doc.text(`Product: ${order.product_name}`, 20, 55);
 
-  doc.text(`Amount: ₹${order.amount}`, 20, 70);
+  doc.text(`Amount: Rs. ${order.amount}`, 20, 70);
 
   doc.text(`Customer: ${order.customer_name}`, 20, 85);
 
