@@ -133,6 +133,8 @@ setWarning('');
 
 
       handler: async function (response: any) {
+        const orderId =
+  `VLT${Date.now().toString().slice(-6)}`;
         setLoading(true);
 
         await supabase
@@ -149,11 +151,12 @@ setWarning('');
 ),
               customer_name: name,
               customer_phone: phone,
+              order_id: orderId,
               customer_email: email,
               customer_address: address,
               customer_city: city,
               customer_landmark: landmark,
-customer_state: stateName,
+              customer_state: stateName,
               customer_pincode: pincode,
               payment_id: response.razorpay_payment_id,
               order_date: new Date().toLocaleDateString('en-IN'),

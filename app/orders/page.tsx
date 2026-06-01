@@ -42,6 +42,7 @@ const downloadInvoice = (order: any) => {
   doc.text(`Date: ${order.order_date}`, 20, 145);
 
   doc.text(`Payment ID: ${order.payment_id}`, 20, 160);
+  doc.text(`Order ID: ${order.order_id}`, 20, 40);
 
   doc.save(`invoice-${order.id}.pdf`);
 
@@ -117,7 +118,9 @@ const downloadInvoice = (order: any) => {
                   <h2 className="text-3xl font-bold text-[#173926]">
                     {order.product_name}
                   </h2>
-
+<p className="mt-2 text-[#5a685f] font-semibold">
+  Order ID: {order.order_id}
+</p>
                   <p className="mt-3 text-[#c3955d] text-2xl font-bold">
                     ₹{order.amount}
                   </p>

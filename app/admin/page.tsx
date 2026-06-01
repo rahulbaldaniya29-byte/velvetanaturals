@@ -1,11 +1,34 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import jsPDF from 'jspdf';
 import { supabase } from '@/lib/supabase';
 import * as XLSX from 'xlsx';
 // @ts-ignore: Missing type declarations for 'file-saver'
 import { saveAs } from 'file-saver';
 export default function AdminPage() {
+  function downloadInvoice(order: any) {
+  const doc = new jsPDF();
+
+  doc.setFontSize(20);
+  doc.text('Velveta Naturals', 20, 20);
+
+  doc.setFontSize(16);
+  doc.text('Invoice', 20, 35);
+
+  doc.setFontSize(12);
+  doc.text(`Order ID: ${order.order_id}`, 20, 55);
+  doc.text(`Product: ${order.product_name}`, 20, 70);
+  doc.text(`Amount: Rs ${order.amount}`, 20, 85);
+  doc.text(`Customer: ${order.customer_name}`, 20, 100);
+  doc.text(`Phone: ${order.customer_phone}`, 20, 115);
+  doc.text(`Address: ${order.customer_address}`, 20, 130);
+  doc.text(`Status: ${order.status}`, 20, 145);
+  doc.text(`Date: ${order.order_date}`, 20, 160);
+  doc.text(`Payment ID: ${order.payment_id}`, 20, 175);
+
+  doc.save(`invoice-${order.order_id}.pdf`);
+}
 const [search, setSearch] = useState('');
   const [orders, setOrders] = useState<any[]>([]);
   const totalRevenue = orders.reduce(
@@ -71,6 +94,8 @@ const totalCustomers = new Set(
 
     PaymentID: order.payment_id,
 
+    OrderID: order.order_id,
+
     Date: order.order_date,
 
   }));
@@ -116,6 +141,14 @@ const filteredOrders = orders.filter((order) =>
     ?.includes(search) ||
 
   order.product_name
+    ?.toLowerCase()
+    .includes(search.toLowerCase()) ||
+
+  order.order_id
+    ?.toLowerCase()
+    .includes(search.toLowerCase()) ||
+
+  order.payment_id
     ?.toLowerCase()
     .includes(search.toLowerCase())
 );
@@ -191,7 +224,24 @@ const filteredOrders = orders.filter((order) =>
 
 </div>
 <div className="mb-10">
-
+<button
+  onClick={exportOrders}
+  className="
+    mb-6
+    px-6
+    py-4
+    rounded-3xl
+    bg-[#173926]
+    hover:bg-[#28543c]
+    text-white
+    font-semibold
+    transition-all
+    duration-300
+    shadow-xl
+  "
+>
+  Export Excel
+</button>
   <input
     type="text"
     placeholder="Search customer, phone or product..."
@@ -235,7 +285,9 @@ const filteredOrders = orders.filter((order) =>
       <p className="mt-2 text-[#5a685f] text-lg">
   Quantity: {order.quantity}
 </p>
-
+<p className="mt-2 text-[#5a685f] text-lg">
+  Order ID: {order.order_id}
+</p>
     </div>
 
     <div className="grid md:grid-cols-2 gap-6 flex-1">
@@ -309,6 +361,41 @@ const filteredOrders = orders.filter((order) =>
     </div>
 
     <div className="flex items-center gap-4 flex-wrap">
+      <a
+  href={`https://wa.me/91${order.customer_phone}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="
+    px-5
+    py-3
+    rounded-2xl
+    bg-green-500
+    hover:bg-green-600
+    text-white
+    font-semibold
+    transition-all
+    duration-300
+  "
+>
+  WhatsApp
+</a>
+
+<a
+  href={`tel:${order.customer_phone}`}
+  className="
+    px-5
+    py-3
+    rounded-2xl
+    bg-blue-500
+    hover:bg-blue-600
+    text-white
+    font-semibold
+    transition-all
+    duration-300
+  "
+>
+  Call
+</a>
       <button
   onClick={async () => {
 
@@ -339,7 +426,22 @@ const filteredOrders = orders.filter((order) =>
 >
   Delete
 </button>
-
+<button
+  onClick={() => downloadInvoice(order)}
+  className="
+    px-5
+    py-3
+    rounded-2xl
+    bg-blue-600
+    hover:bg-blue-700 
+    text-white
+    font-semibold
+    transition-all
+    duration-300
+  "
+>
+  Invoice PDF
+</button>
   <div className="px-5 py-2 rounded-full bg-green-100 text-green-700 font-semibold">
     Paid
   </div>
