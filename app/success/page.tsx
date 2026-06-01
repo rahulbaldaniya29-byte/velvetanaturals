@@ -31,7 +31,7 @@ export default function SuccessPage() {
   useEffect(() => {
   const timer = setTimeout(() => {
     router.push('/');
-  }, 30000);
+  }, 20000);
 
   return () => clearTimeout(timer);
 }, [router]);
@@ -58,16 +58,21 @@ export default function SuccessPage() {
 
         <div className="mt-10 flex flex-col md:flex-row gap-5 justify-center">
 
-          
+  <a
+    href="/orders"
+    className="px-8 py-4 rounded-2xl bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300 hover:scale-105"
+  >
+    Track My Order
+  </a>
 
-          <a
-            href="/"
-            className="px-8 py-4 rounded-2xl border border-[#173926] text-[#173926] hover:bg-[#173926] hover:text-white transition-all duration-300 hover:scale-105"
-          >
-            Continue Shopping
-          </a>
+  <a
+    href="/"
+    className="px-8 py-4 rounded-2xl border border-[#173926] text-[#173926] hover:bg-[#173926] hover:text-white transition-all duration-300 hover:scale-105"
+  >
+    Continue Shopping
+  </a>
 
-        </div>
+</div>
 
       </div>
 

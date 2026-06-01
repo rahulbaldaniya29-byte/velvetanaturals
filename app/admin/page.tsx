@@ -354,12 +354,10 @@ const filteredOrders = orders.filter((order) =>
       <p className="text-sm text-[#5a685f]">
         Payment ID
       </p>
-
       <h3 className="font-semibold text-[#173926] break-all">
         {order.payment_id}
       </h3>
     </div>
-
     <div className="flex items-center gap-4 flex-wrap">
       <a
   href={`https://wa.me/91${order.customer_phone}`}

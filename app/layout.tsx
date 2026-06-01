@@ -17,8 +17,21 @@ export const metadata = {
     'Natural Supplements',
     'Premium Wellness',
   ],
-};
 
+  openGraph: {
+    title: 'Velveta Naturals',
+    description:
+      'Premium Ayurvedic wellness products crafted with natural ingredients.',
+    url: 'https://velvetanaturals.vercel.app',
+    siteName: 'Velveta Naturals',
+    type: 'website',
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 export default function RootLayout({
   children,
 }: {
@@ -31,8 +44,10 @@ export default function RootLayout({
 
         {children}
   
-
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<Script
+  src="https://checkout.razorpay.com/v1/checkout.js"
+  strategy="beforeInteractive"
+/>
 
       </body>
 
