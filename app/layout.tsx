@@ -3,8 +3,8 @@
 import './globals.css'
 
 import Script from 'next/script'
-
-export const metadata = {
+import type { Metadata } from 'next';
+export const metadata: Metadata = {
   title: 'Velveta Naturals | Premium Ayurvedic Wellness',
 
   description:
@@ -30,6 +30,9 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+    verification: {
+    google: 'GjX8DLKN1c6wbi4nqfVXuy9MNKKU82ZTPmjemQAgBMU',
   },
 };
 export default function RootLayout({
