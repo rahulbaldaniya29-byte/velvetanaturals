@@ -319,7 +319,7 @@ const filteredOrders = orders.filter((order) =>
 </button>
   <input
     type="text"
-    placeholder="Search customer, phone or product..."
+    placeholder="Search Name, Phone, Order ID, Payment ID..."
     value={search}
     onChange={(e) => setSearch(e.target.value)}
     className="
@@ -613,7 +613,33 @@ Pincode: ${order.customer_pincode}
   <div className="px-5 py-2 rounded-full bg-green-100 text-green-700 font-semibold">
     Paid
   </div>
-
+<div
+  className={`px-4 py-2 rounded-full text-white text-sm font-semibold ${
+    order.status === 'Delivered'
+      ? 'bg-green-500'
+      : order.status === 'Shipped'
+      ? 'bg-blue-500'
+      : order.status === 'Out For Delivery'
+      ? 'bg-orange-500'
+      : 'bg-yellow-500'
+  }`}
+>
+  {order.status}
+  {order.status_updated_at && (
+  <p className="text-xs text-[#5a685f] mt-1">
+    Updated:
+    {new Date(
+      order.status_updated_at
+    ).toLocaleString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })}
+  </p>
+)}
+</div>
   <select
     aria-label="Order status"
     value={order.status}
@@ -622,9 +648,15 @@ Pincode: ${order.customer_pincode}
       const newStatus = e.target.value;
 
       await supabase
-        .from('orders')
-        .update({ status: newStatus })
-        .eq('id', order.id);
+  .from('orders')
+  .update({
+    status: newStatus,
+    status_updated_at: new Date().toLocaleString(
+  'en-IN',
+  { timeZone: 'Asia/Kolkata' }
+),
+  })
+  .eq('id', order.id);
 
       fetchOrders();
 

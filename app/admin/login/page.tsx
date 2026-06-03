@@ -7,6 +7,7 @@ export default function AdminLogin() {
   const [password, setPassword] =
     useState('');
 const [showPassword, setShowPassword] = useState(false);
+const [error, setError] = useState('');
   const login = () => {
 
     if (
@@ -24,7 +25,11 @@ const [showPassword, setShowPassword] = useState(false);
 
     } else {
 
-      alert('Wrong Password');
+      setError('Invalid Password');
+
+setTimeout(() => {
+  setError('');
+}, 2500);
 
     }
 
@@ -33,6 +38,25 @@ const [showPassword, setShowPassword] = useState(false);
   return (
 
     <main className="min-h-screen flex items-center justify-center">
+      {error && (
+  <div
+    className="
+      fixed
+      top-5
+      right-5
+      bg-red-500
+      text-white
+      px-5
+      py-3
+      rounded-2xl
+      shadow-2xl
+      z-50
+      font-semibold
+    "
+  >
+    {error}
+  </div>
+)}
 
       <div className="bg-white p-8 rounded-3xl shadow-xl w-[400px]">
 
