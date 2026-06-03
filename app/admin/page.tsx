@@ -4,11 +4,16 @@ import { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
 import { supabase } from '@/lib/supabase';
 import * as XLSX from 'xlsx';
+import { useRouter } from 'next/navigation';
 // @ts-ignore: Missing type declarations for 'file-saver'
 import { saveAs } from 'file-saver';
 export default function AdminPage() {
+  const router = useRouter();
+  
+  const [copied, setCopied] = useState('');
   function downloadInvoice(order: any) {
   const doc = new jsPDF();
+
 
   doc.setFontSize(20);
   doc.text('Velveta Naturals', 20, 20);
@@ -47,12 +52,32 @@ const pendingOrders = orders.filter(
 const totalCustomers = new Set(
   orders.map((order) => order.customer_phone)
 ).size;
+const today = new Date().toLocaleDateString('en-GB');
+
+const todaysOrders = orders.filter(
+  (order) => order.order_date === today
+).length;
+
+const todaysRevenue = orders
+  .filter((order) => order.order_date === today)
+  .reduce(
+    (acc, order) => acc + order.amount,
+    0
+  );
 
   useEffect(() => {
 
-    fetchOrders();
+  const isAdmin =
+    localStorage.getItem('adminAuth');
 
-  }, []);
+  if (!isAdmin) {
+    router.push('/admin/login');
+    return;
+  }
+
+  fetchOrders();
+
+}, [router]);
 
   async function fetchOrders() {
 
@@ -155,6 +180,24 @@ const filteredOrders = orders.filter((order) =>
   return (
 
     <main className="min-h-screen bg-[#f7f5ef] p-5 md:p-10">
+      {copied && (
+  <div
+    className="
+      fixed
+      top-5
+      right-5
+      bg-[#173926]
+      text-white
+      px-5
+      py-3
+      rounded-2xl
+      shadow-2xl
+      z-50
+    "
+  >
+    {copied}
+  </div>
+)}
 
      <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 mb-10">
       
@@ -169,8 +212,8 @@ const filteredOrders = orders.filter((order) =>
     </p>
   </div>
 
-  <div className="bg-[#173926] text-white px-6 py-4 rounded-3xl">
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mt-10 mb-10">
+  <div className="bg-[#173926] text-white p-8 rounded-3xl w-full">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 mt-10 mb-10">
 
   <div className="bg-white rounded-[30px] p-6 shadow-xl border border-[#e5ebe7]">
     <p className="text-[#5a685f] text-sm">
@@ -211,15 +254,29 @@ const filteredOrders = orders.filter((order) =>
       {totalCustomers}
     </h2>
   </div>
+  <div className="bg-white rounded-[30px] p-6 shadow-xl border border-[#e5ebe7]">
+  <p className="text-[#5a685f] text-sm">
+    Today's Orders
+  </p>
+
+  <h2 className="mt-3 text-3xl font-black text-blue-600">
+    {todaysOrders}
+  </h2>
+</div>
+
+<div className="bg-white rounded-[30px] p-6 shadow-xl border border-[#e5ebe7]">
+  <p className="text-[#5a685f] text-sm">
+    Today's Revenue
+  </p>
+
+  <h2 className="mt-3 text-3xl font-black text-[#173926]">
+    ₹{todaysRevenue}
+  </h2>
+</div>
+
 
 </div>
-    <h2 className="text-3xl font-bold">
-      {orders.length}
-    </h2>
-
-    <p className="text-white/70 text-sm">
-      Total Orders
-    </p>
+    
   </div>
 
 </div>
@@ -241,6 +298,24 @@ const filteredOrders = orders.filter((order) =>
   "
 >
   Export Excel
+</button>
+<button
+  onClick={() => {
+    localStorage.removeItem('adminAuth');
+    window.location.href = '/admin/login';
+  }}
+  className="
+    ml-4
+    px-6
+    py-4
+    rounded-3xl
+    bg-red-500
+    hover:bg-red-600
+    text-white
+    font-semibold
+  "
+>
+  Logout
 </button>
   <input
     type="text"
@@ -285,10 +360,35 @@ const filteredOrders = orders.filter((order) =>
       <p className="mt-2 text-[#5a685f] text-lg">
   Quantity: {order.quantity}
 </p>
-<p className="mt-2 text-[#5a685f] text-lg">
-  Order ID: {order.order_id}
-</p>
-    </div>
+<div className="mt-2 flex items-center gap-3 flex-wrap">
+
+  <p className="text-[#5a685f] text-lg">
+    Order ID: {order.order_id}
+  </p>
+
+  <button
+    onClick={() => {
+  navigator.clipboard.writeText(order.order_id);
+
+  setCopied('Order ID Copied ✓');
+
+  setTimeout(() => {
+    setCopied('');
+  }, 2000);
+}}
+    className="
+      px-3
+      py-1
+      rounded-lg
+      bg-[#173926]
+      text-white
+      text-sm
+    "
+  >
+    Copy
+  </button>
+
+</div>    </div>
 
     <div className="grid md:grid-cols-2 gap-6 flex-1">
 
@@ -345,7 +445,44 @@ const filteredOrders = orders.filter((order) =>
     <div className="mt-2 bg-[#f7f5ef] p-5 rounded-2xl text-[#173926]">
       {order.customer_address}
     </div>
+<button
+  onClick={() => {
 
+    const customerDetails = `
+Name: ${order.customer_name}
+Phone: ${order.customer_phone}
+Address: ${order.customer_address}
+City: ${order.customer_city}
+Pincode: ${order.customer_pincode}
+`;
+
+    navigator.clipboard.writeText(
+      customerDetails
+    );
+
+    setCopied('Address Copied ✓');
+
+    setTimeout(() => {
+      setCopied('');
+    }, 2000);
+
+  }}
+  className="
+    mt-3
+    px-4
+    py-2
+    rounded-xl
+    bg-[#173926]
+    hover:bg-[#28543c]
+    text-white
+    text-sm
+    font-semibold
+    transition-all
+    duration-300
+  "
+>
+  Copy Address
+</button>
   </div>
 
   <div className="mt-6 flex flex-col md:flex-row md:items-center justify-between gap-5 flex-wrap gap-4">
@@ -357,7 +494,40 @@ const filteredOrders = orders.filter((order) =>
       <h3 className="font-semibold text-[#173926] break-all">
         {order.payment_id}
       </h3>
+      <button
+  onClick={() => {
+  navigator.clipboard.writeText(order.payment_id);
+
+  setCopied('Payment ID Copied ✓');
+
+  setTimeout(() => {
+    setCopied('');
+  }, 2000);
+}}
+  className="
+    mt-2
+    px-4
+    py-2
+    rounded-xl
+    bg-blue-500
+    hover:bg-blue-600
+    text-white
+    text-sm
+    font-semibold
+  "
+>
+  Copy Payment ID
+</button>
     </div>
+    <div>
+  <p className="text-sm text-[#5a685f]">
+    Order Date
+  </p>
+
+  <h3 className="font-semibold text-[#173926]">
+    {order.order_date}
+  </h3>
+</div>
     <div className="flex items-center gap-4 flex-wrap">
       <a
   href={`https://wa.me/91${order.customer_phone}`}
