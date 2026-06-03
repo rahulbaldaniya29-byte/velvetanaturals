@@ -67,11 +67,10 @@ const todaysRevenue = orders
 
   useEffect(() => {
 
-  const isAdmin =
-    localStorage.getItem('adminAuth');
+  const isAdmin = localStorage.getItem('adminAuth');
 
   if (!isAdmin) {
-    router.push('/admin/login');
+    router.replace('/admin/login');
     return;
   }
 

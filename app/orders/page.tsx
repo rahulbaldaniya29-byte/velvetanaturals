@@ -1,8 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useEffect } from 'react';
+import Script from 'next/script';
 import jsPDF from 'jspdf';
+
 import { supabase } from '@/lib/supabase';
+
 import {
   Package,
   Truck,
@@ -69,8 +73,32 @@ const downloadInvoice = (order: any) => {
     }
 
   };
+  useEffect(() => {
 
-  return (
+  const delivered = orders.some(
+    (order) => order.status === 'Delivered'
+  );
+
+  if (
+    delivered &&
+    typeof window !== 'undefined' &&
+    (window as any).confetti
+  ) {
+    (window as any).confetti({
+      particleCount: 120,
+      spread: 90,
+      origin: { y: 0.6 },
+    });
+  }
+
+}, [orders]);
+
+return (
+  <>
+    <Script
+      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
+      strategy="afterInteractive"
+    />
 
     <main className="min-h-screen bg-[#fdfcf8] px-6 py-20">
       {copied && (
@@ -391,6 +419,7 @@ const downloadInvoice = (order: any) => {
 
     </main>
 
-  );
+  </>
+);
 
 }
