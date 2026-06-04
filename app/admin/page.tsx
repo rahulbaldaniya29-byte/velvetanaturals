@@ -67,7 +67,8 @@ const todaysRevenue = orders
 
   useEffect(() => {
 
-  const isAdmin = localStorage.getItem('adminAuth');
+  const isAdmin =
+    localStorage.getItem('adminAuth');
 
   if (!isAdmin) {
     router.replace('/admin/login');
@@ -300,9 +301,11 @@ const filteredOrders = orders.filter((order) =>
 </button>
 <button
   onClick={() => {
-    localStorage.removeItem('adminAuth');
-    window.location.href = '/admin/login';
-  }}
+  localStorage.removeItem('adminAuth');
+
+  window.location.href =
+    '/admin/login';
+}}
   className="
     ml-4
     px-6

@@ -52,7 +52,7 @@ export function CartDrawer() {
             <span className="font-serif text-xl text-forest">Your Cart</span>
             {itemCount > 0 && <span className="w-6 h-6 rounded-full bg-green text-white text-xs flex items-center justify-center">{itemCount}</span>}
           </div>
-          <button onClick={() => setCartOpen(false)} className="p-2 rounded-full hover:bg-green-pale/30 transition-colors">
+          <button onClick={() => setCartOpen(false)} title="Close cart" aria-label="Close cart" className="p-2 rounded-full hover:bg-green-pale/30 transition-colors">
             <X size={20} className="text-muted" />
           </button>
         </div>
@@ -79,17 +79,17 @@ export function CartDrawer() {
                     <p className="text-sm font-medium text-forest truncate">{item.name}</p>
                     <p className="text-xs text-green font-medium mt-0.5">₹{item.price.toLocaleString('en-IN')}</p>
                     <div className="flex items-center gap-2 mt-2">
-                      <button onClick={() => updateQty(item._id, item.qty - 1)} className="w-7 h-7 rounded-full border border-green-pale flex items-center justify-center hover:bg-green hover:text-white hover:border-green transition-colors">
+                      <button onClick={() => updateQty(item._id, item.qty - 1)} title="Decrease quantity" aria-label={`Decrease quantity of ${item.name}`} className="w-7 h-7 rounded-full border border-green-pale flex items-center justify-center hover:bg-green hover:text-white hover:border-green transition-colors">
                         <Minus size={12} />
                       </button>
                       <span className="text-sm font-medium w-6 text-center">{item.qty}</span>
-                      <button onClick={() => updateQty(item._id, item.qty + 1)} disabled={item.qty >= item.stock} className="w-7 h-7 rounded-full border border-green-pale flex items-center justify-center hover:bg-green hover:text-white hover:border-green transition-colors disabled:opacity-40">
+                      <button onClick={() => updateQty(item._id, item.qty + 1)} disabled={item.qty >= item.stock} title="Increase quantity" aria-label={`Increase quantity of ${item.name}`} className="w-7 h-7 rounded-full border border-green-pale flex items-center justify-center hover:bg-green hover:text-white hover:border-green transition-colors disabled:opacity-40">
                         <Plus size={12} />
                       </button>
                     </div>
                   </div>
                   <div className="flex flex-col items-end justify-between">
-                    <button onClick={() => removeItem(item._id)} className="p-1.5 rounded-lg hover:bg-red-50 text-muted hover:text-red-400 transition-colors">
+                    <button onClick={() => removeItem(item._id)} title={`Remove ${item.name}`} aria-label={`Remove ${item.name} from cart`} className="p-1.5 rounded-lg hover:bg-red-50 text-muted hover:text-red-400 transition-colors">
                       <Trash2 size={14} />
                     </button>
                     <p className="text-sm font-medium text-forest">₹{(item.price * item.qty).toLocaleString('en-IN')}</p>

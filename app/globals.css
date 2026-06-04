@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-}
 
 body {
   margin: 0;
@@ -47,9 +44,7 @@ body {
     0 20px 60px rgba(0,0,0,0.15),
     0 0 40px rgba(195,149,93,0.15);
 }
-html {
-  scroll-behavior: smooth;
-}
+
 body {
   cursor: default;
 }

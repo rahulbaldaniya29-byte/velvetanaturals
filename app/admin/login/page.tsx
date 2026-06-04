@@ -10,31 +10,30 @@ const [showPassword, setShowPassword] = useState(false);
 const [error, setError] = useState('');
   const login = () => {
 
-    if (
-  password ===
-  process.env.NEXT_PUBLIC_ADMIN_PASSWORD
-) {
+  if (
+    password ===
+    process.env.NEXT_PUBLIC_ADMIN_PASSWORD
+  ) {
 
-      localStorage.setItem(
-        'adminAuth',
-        'true'
-      );
+    localStorage.setItem(
+      'adminAuth',
+      'true'
+    );
 
-      window.location.href =
-        '/admin';
+    window.location.href =
+      '/admin';
 
-    } else {
+  } else {
 
-      setError('Invalid Password');
+    setError('Invalid Password');
 
-setTimeout(() => {
-  setError('');
-}, 2500);
+    setTimeout(() => {
+      setError('');
+    }, 2500);
 
-    }
+  }
 
-  };
-
+};
   return (
 
     <main className="min-h-screen flex items-center justify-center">

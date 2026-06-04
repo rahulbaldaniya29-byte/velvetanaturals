@@ -148,7 +148,7 @@ export function Navbar() {
             >
               <div className="flex items-center justify-between p-6 border-b border-green-pale/30">
                 <span className="font-serif text-xl text-forest">Menu</span>
-                <button onClick={() => setMobileMenuOpen(false)} className="p-2 rounded-full hover:bg-green-pale/30">
+                <button onClick={() => setMobileMenuOpen(false)} className="p-2 rounded-full hover:bg-green-pale/30" aria-label="Close menu" title="Close menu">
                   <X size={20} className="text-forest" />
                 </button>
               </div>

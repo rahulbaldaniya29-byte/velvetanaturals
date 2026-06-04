@@ -690,12 +690,11 @@ setCartCount(totalItems);
   onClick={async () => {
 
   if (
-    !messageEmail.includes('@') ||
-    !messageEmail.includes('.')
-  ) {
-    setSuccessMessage('Please enter valid email 😄');
-    return;
-  }
+  !messageEmail.includes('@') ||
+  !messageEmail.includes('.')
+) {
+  return;
+}
 
   setSending(true);
 
@@ -712,7 +711,7 @@ setCartCount(totalItems);
   setMessageName('');
   setMessageEmail('');
   setMessageText('');
-  setSuccessMessage('sent');
+  setSuccessMessage('');
   setTimeout(() => {
   setSuccessMessage('');
 }, 2500);
@@ -729,10 +728,10 @@ setCartCount(totalItems);
 >
   {sending ? 'Sending...' : 'Send Message'}
 </button>
-{successMessage && (
-  <div className="mt-5 bg-green-500/20 border border-green-400/30 text-green-200 px-5 py-4 rounded-2xl text-center backdrop-blur-md animate-pulse">
-    ✓ Message Sent Successfully
-  </div>
+{successMessage && successMessage !== 'sent' && (
+  <p className="text-red-300 text-sm mt-2">
+    {successMessage}
+  </p>
 )}
             </div>
           </div>
