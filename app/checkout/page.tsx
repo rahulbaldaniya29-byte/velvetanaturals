@@ -122,6 +122,8 @@ setPincode(
 
 };
   const handlePayment = async () => {
+
+    
     if (cart.length === 0) {
 
   setWarning('Cart is empty 😄');
@@ -170,7 +172,25 @@ if (pincode.length < 6) {
   return;
 
 }
+const blockedPincodes = [
+  '111111',
+  '222222',
+  '333333',
+];
 
+if (
+  blockedPincodes.includes(
+    pincode
+  )
+) {
+
+  setWarning(
+    '❌ Delivery Not Available In Your Area'
+  );
+
+  return;
+
+}
 setWarning('');
     
 

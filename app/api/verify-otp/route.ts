@@ -57,7 +57,7 @@
     );
 
     return response;
-    } catch (error) {
+    } catch {
         return NextResponse.json(
         { success: false },
         { status: 500 }

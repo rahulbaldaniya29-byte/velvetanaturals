@@ -10,29 +10,7 @@ import { saveAs } from 'file-saver';
 export default function AdminPage() {
   const router = useRouter();
   const [copied, setCopied] = useState('');
-  function downloadInvoice(order: any) {
-  const doc = new jsPDF();
-
-
-  doc.setFontSize(20);
-  doc.text('Velveta Naturals', 20, 20);
-
-  doc.setFontSize(16);
-  doc.text('Invoice', 20, 35);
-
-  doc.setFontSize(12);
-  doc.text(`Order ID: ${order.order_id}`, 20, 55);
-  doc.text(`Product: ${order.product_name}`, 20, 70);
-  doc.text(`Amount: Rs ${order.amount}`, 20, 85);
-  doc.text(`Customer: ${order.customer_name}`, 20, 100);
-  doc.text(`Phone: ${order.customer_phone}`, 20, 115);
-  doc.text(`Address: ${order.customer_address}`, 20, 130);
-  doc.text(`Status: ${order.status}`, 20, 145);
-  doc.text(`Date: ${order.order_date}`, 20, 160);
-  doc.text(`Payment ID: ${order.payment_id}`, 20, 175);
-
-  doc.save(`invoice-${order.order_id}.pdf`);
-}
+  
 const [search, setSearch] = useState('');
   const [orders, setOrders] = useState<any[]>([]);
   const [customerCount, setCustomerCount] =
@@ -611,22 +589,7 @@ Pincode: ${order.customer_pincode}
 >
   Delete
 </button>
-<button
-  onClick={() => downloadInvoice(order)}
-  className="
-    px-5
-    py-3
-    rounded-2xl
-    bg-blue-600
-    hover:bg-blue-700 
-    text-white
-    font-semibold
-    transition-all
-    duration-300
-  "
->
-  Invoice PDF
-</button>
+
   <div className="px-5 py-2 rounded-full bg-green-100 text-green-700 font-semibold">
     Paid
   </div>

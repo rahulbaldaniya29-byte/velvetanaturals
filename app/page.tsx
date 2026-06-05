@@ -251,15 +251,9 @@ if (loading) {
             <a href="#about" className="hover:text-[#d6b37a] transition-all duration-300">Why Velveta</a>
             <a href="#contact" className="hover:text-[#d6b37a] transition-all duration-300">Contact</a>
 
-            <button
-  onClick={() => {
-    window.location.href = '/orders';
-  }}
-  className="hover:text-[#d6b37a] transition-all duration-300"
->
-  My Orders
-</button>
           </nav>
+          
+          
 
           {/* RIGHT SIDE */}
 <div className="flex items-center gap-2 md:gap-4">
@@ -284,6 +278,7 @@ if (loading) {
  className="hidden md:block px-5 py-2 rounded-full bg-[#4f7c5d] text-white hover:bg-[#5e9170] transition">
               Shop Now
             </button>
+            
             <button
   onClick={() => {
     window.location.href = '/cart';

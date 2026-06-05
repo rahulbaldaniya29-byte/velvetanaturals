@@ -20,6 +20,10 @@ export async function POST(req: Request) {
     const expiresAt = new Date(
       Date.now() + 10 * 60 * 1000
     ).toISOString();
+await supabase
+  .from('email_otps')
+  .delete()
+  .eq('email', email);
 
     await supabase.from('email_otps').insert({
       email,
@@ -153,7 +157,7 @@ html: `
     return NextResponse.json({
       success: true,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to send OTP' },
       { status: 500 }

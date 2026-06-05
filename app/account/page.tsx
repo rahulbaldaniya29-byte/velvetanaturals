@@ -9,12 +9,32 @@ export default function AccountPage() {
     useState<any>(null);
 const [name, setName] = useState('');
 const [phone, setPhone] = useState('');
+const [address, setAddress] = useState('');
+const [city, setCity] = useState('');
+const [stateName, setStateName] = useState('');
+const [pincode, setPincode] = useState('');
+const [landmark, setLandmark] = useState('');
 const [saving, setSaving] = useState(false);
-const [totalOrders, setTotalOrders] = useState(0);
-const [totalSpent, setTotalSpent] = useState(0);
-const [lastOrder, setLastOrder] = useState('');
-const [recentOrder, setRecentOrder] =
-  useState<any>(null);
+const profileFields = [
+  name,
+  phone,
+  address,
+  city,
+  stateName,
+  pincode,
+  landmark,
+];
+
+const completedFields =
+  profileFields.filter(
+    (field) => field?.trim() !== ''
+  ).length;
+
+const profileCompletion = Math.round(
+  (completedFields / profileFields.length) * 100
+);
+const [isEditing, setIsEditing] = useState(false);
+const [success, setSuccess] = useState(false);
   useEffect(() => {
 
     const email =
@@ -49,7 +69,11 @@ const [recentOrder, setRecentOrder] =
   setName(data.name || '');
 
   setPhone(data.phone || '');
-fetchStats(email);
+  setAddress(data.address || '');
+setCity(data.city || '');
+setStateName(data.state || '');
+setPincode(data.pincode || '');
+setLandmark(data.landmark || '');
 }
 
 
@@ -65,41 +89,7 @@ fetchStats(email);
       '/account/login';
 
   };
-  const fetchStats = async (
-  email: string
-) => {
-
-  const { data } = await supabase
-    .from('orders')
-    .select('*')
-    .eq('customer_email', email);
-
-  if (!data) return;
-
-  setTotalOrders(data.length);
-
-  const spent = data.reduce(
-    (sum, order) =>
-      sum + Number(order.amount || 0),
-    0
-  );
-
-  setTotalSpent(spent);
-
-  if (data.length > 0) {
-
-  const latest =
-    data[data.length - 1];
-
-  setLastOrder(
-    latest.order_id
-  );
-
-  setRecentOrder(latest);
-
-}
-
-};
+  
 const saveProfile = async () => {
 
   if (!customer) return;
@@ -108,28 +98,41 @@ const saveProfile = async () => {
 
   await supabase
     .from('customers')
-    .update({
-      name,
-      phone,
-    })
+   .update({
+  name,
+  phone,
+  address,
+  city,
+  state: stateName,
+  pincode,
+  landmark,
+})
     .eq('id', customer.id);
 
   setCustomer({
-    ...customer,
-    name,
-    phone,
-  });
-
+  ...customer,
+  name,
+  phone,
+  address,
+  city,
+  state: stateName,
+  pincode,
+  landmark,
+});
+setIsEditing(false);
   setSaving(false);
 
-  alert(
-    'Profile Updated ✅'
-  );
+setSuccess(true);
 
+setTimeout(() => {
+  setSuccess(false);
+}, 3000);
 };
   if (!customer) {
     return (
       <main className="min-h-screen bg-[#f7f5ef] py-10 px-4">
+        
+
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-[35px] p-8 shadow-xl">
             <p className="text-center text-[#173926] font-semibold">
@@ -143,71 +146,95 @@ const saveProfile = async () => {
 
   return (
     <main className="min-h-screen bg-[#f7f5ef] py-10 px-4">
+      {success && (
+  <div
+    className="
+      fixed
+      top-5
+      right-5
+      bg-white
+      border
+      border-green-200
+      text-[#173926]
+      px-6
+      py-4
+      rounded-2xl
+      shadow-2xl
+      z-50
+      font-semibold
+    "
+  >
+    ✅ Profile updated successfully
+  </div>
+)}
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-[35px] p-8 shadow-xl">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <h1 className="text-4xl font-black text-[#173926]">
-                My Account
-              </h1>
+              <div className="flex items-center gap-4 mb-4">
 
-              <p className="mt-2 text-[#5a685f] text-lg">
-                Welcome back, {customer.name}
-              </p>
+  <div
+    className="
+      w-16
+      h-16
+      rounded-full
+      bg-[#173926]
+      text-white
+      flex
+      items-center
+      justify-center
+      text-2xl
+      font-bold
+    "
+  >
+    {name?.charAt(0)?.toUpperCase()}
+  </div>
 
-              <p className="text-[#5a685f]">
-                {customer.email}
-              </p>
+  <div>
+    <h3 className="text-xl font-bold text-[#173926]">
+      {name || 'Customer'}
+    </h3>
+
+    <p className="text-[#6b7280]">
+      Velveta Member
+    </p>
+  </div>
+
+</div>
+              <div>
+  <h1 className="text-4xl md:text-5xl font-black text-[#173926]">
+    Account Settings
+  </h1>
+
+  <p className="mt-2 text-[#6b7280]">
+    Manage your profile and delivery information
+  </p>
+</div>
             </div>
 
-            <button
-              onClick={logout}
-              className="
-                px-6
-                py-3
-                rounded-2xl
-                bg-red-500
-                hover:bg-red-600
-                text-white
-                font-semibold
-              "
-            >
-              Logout
-            </button>
+<button
+  onClick={logout}
+  className="
+    px-6
+    py-3
+    rounded-2xl
+    border
+    border-red-200
+    bg-red-50
+    hover:bg-red-100
+    text-red-600
+    font-semibold
+    transition-all
+    duration-300
+  "
+>
+  Logout
+</button>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-            <div className="bg-[#f7f5ef] rounded-3xl p-5">
-              <p className="text-gray-500 text-sm">Total Orders</p>
-              <h2 className="text-3xl font-black text-[#173926] mt-2">
-                {totalOrders}
-              </h2>
-            </div>
-
-            <div className="bg-[#f7f5ef] rounded-3xl p-5">
-              <p className="text-gray-500 text-sm">Total Spent</p>
-              <h2 className="text-3xl font-black text-[#173926] mt-2">
-                ₹{totalSpent}
-              </h2>
-            </div>
-
-            <div className="bg-[#f7f5ef] rounded-3xl p-5">
-              <p className="text-gray-500 text-sm">Last Order</p>
-              <h2 className="text-sm font-bold text-[#173926] mt-2 break-all">
-                {lastOrder || 'N/A'}
-              </h2>
-            </div>
-
-            <div className="bg-[#f7f5ef] rounded-3xl p-5">
-              <p className="text-gray-500 text-sm">Member Since</p>
-              <h2 className="font-bold text-[#173926] mt-2">
-                {new Date(customer.created_at).toLocaleDateString('en-IN')}
-              </h2>
-            </div>
-          </div>
         </div>
 
-        <div className="mt-8 bg-white rounded-[35px] p-8 shadow-xl">
+    <div className="mt-8 bg-white rounded-[35px] p-8 shadow-xl">
           <h2 className="text-2xl font-bold text-[#173926]">Profile Information</h2>
 
           <div className="grid md:grid-cols-2 gap-6 mt-8">
@@ -218,16 +245,21 @@ const saveProfile = async () => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                disabled={!isEditing}
                 title="Full Name"
                 placeholder="Enter your full name"
-                className="
-                  w-full
-                  border
-                  border-gray-200
-                  rounded-2xl
-                  p-4
-                  outline-none
-                "
+                className={`
+  w-full
+  rounded-2xl
+  p-4
+  outline-none
+  transition-all
+  ${
+    isEditing
+      ? 'border border-gray-200 bg-white'
+      : 'border-0 bg-transparent'
+  }
+`}
               />
             </div>
 
@@ -238,133 +270,215 @@ const saveProfile = async () => {
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+                disabled={!isEditing}
                 title="Phone Number"
                 placeholder="Enter your phone number"
-                className="
-                  w-full
-                  border
-                  border-gray-200
-                  rounded-2xl
-                  p-4
-                  outline-none
-                "
+                className={`
+  w-full
+  rounded-2xl
+  p-4
+  outline-none
+  transition-all
+  ${
+    isEditing
+      ? 'border border-gray-200 bg-white'
+      : 'border-0 bg-transparent'
+  }
+`}
               />
             </div>
 
             <div className="md:col-span-2">
               <label htmlFor="email-address" className="block text-gray-500 mb-2">Email Address</label>
               <input
-                id="email-address"
-                type="text"
-                value={customer.email}
-                readOnly
-                title="Email Address"
-                placeholder="Your email address"
-                className="
-                  w-full
-                  bg-gray-100
-                  rounded-2xl
-                  p-4
-                  outline-none
-                "
-              />
+  id="email-address"
+  type="text"
+  value={customer.email}
+  readOnly
+  title="Email Address"
+  placeholder="Your email address"
+  className="
+    w-full
+    bg-gray-100
+    rounded-2xl
+    p-4
+    outline-none
+    cursor-not-allowed
+  "
+/>
             </div>
+              <div>
+  <label className="block text-gray-500 mb-2">
+    Address
+  </label>
+
+  <input
+    type="text"
+    value={address}
+    onChange={(e) =>
+      setAddress(e.target.value)
+    }
+    disabled={!isEditing}
+    className={`
+  w-full
+  rounded-2xl
+  p-4
+  outline-none
+  transition-all
+  ${
+    isEditing
+      ? 'border border-gray-200 bg-white'
+      : 'border-0 bg-transparent'
+  }
+`}
+  />
+</div>
+
+<div>
+  <label className="block text-gray-500 mb-2">
+    City
+  </label>
+
+  <input
+    type="text"
+    value={city}
+    onChange={(e) =>
+      setCity(e.target.value)
+    }
+    disabled={!isEditing}
+    className={`
+  w-full
+  rounded-2xl
+  p-4
+  outline-none
+  transition-all
+  ${
+    isEditing
+      ? 'border border-gray-200 bg-white'
+      : 'border-0 bg-transparent'
+  }
+`}
+  />
+</div>
+
+<div>
+  <label className="block text-gray-500 mb-2">
+    State
+  </label>
+
+  <input
+    type="text"
+    value={stateName}
+    onChange={(e) =>
+      setStateName(e.target.value)
+    }
+    disabled={!isEditing}
+    className={`
+  w-full
+  rounded-2xl
+  p-4
+  outline-none
+  transition-all
+  ${
+    isEditing
+      ? 'border border-gray-200 bg-white'
+      : 'border-0 bg-transparent'
+  }
+`}
+  />
+</div>
+
+<div>
+  <label className="block text-gray-500 mb-2">
+    Pincode
+  </label>
+
+  <input
+    type="text"
+    value={pincode}
+    onChange={(e) =>
+      setPincode(e.target.value)
+    }
+    disabled={!isEditing}
+    className={`
+  w-full
+  rounded-2xl
+  p-4
+  outline-none
+  transition-all
+  ${
+    isEditing
+      ? 'border border-gray-200 bg-white'
+      : 'border-0 bg-transparent'
+  }
+`}
+  />
+</div>
+
+<div>
+  <label className="block text-gray-500 mb-2">
+    Landmark
+  </label>
+
+  <input
+    type="text"
+    value={landmark}
+    onChange={(e) =>
+      setLandmark(e.target.value)
+    }
+    disabled={!isEditing}
+    className={`
+  w-full
+  rounded-2xl
+  p-4
+  outline-none
+  transition-all
+  ${
+    isEditing
+      ? 'border border-gray-200 bg-white'
+      : 'border-0 bg-transparent'
+  }
+`}
+  />
+</div>
           </div>
 
           <div className="flex flex-wrap gap-4 mt-8">
-            <button
-              onClick={saveProfile}
-              className="
-                px-6
-                py-3
-                rounded-2xl
-                bg-[#173926]
-                hover:bg-[#28543c]
-                text-white
-                font-semibold
-              "
-            >
-              {saving ? 'Saving...' : 'Save Profile'}
-            </button>
-
-            <button
-              onClick={() => (window.location.href = '/orders')}
-              className="
-                px-6
-                py-3
-                rounded-2xl
-                bg-[#c3955d]
-                hover:opacity-90
-                text-white
-                font-semibold
-              "
-            >
-              My Orders
-            </button>
+            {isEditing ? (
+  <button
+    onClick={saveProfile}
+    className="
+      px-6
+      py-3
+      rounded-2xl
+      bg-[#173926]
+      hover:bg-[#28543c]
+      text-white
+      font-semibold
+    "
+  >
+    {saving ? 'Saving...' : 'Save Profile'}
+  </button>
+) : (
+  <button
+    onClick={() => setIsEditing(true)}
+    className="
+      px-6
+      py-3
+      rounded-2xl
+      bg-blue-600
+      hover:bg-blue-700
+      text-white
+      font-semibold
+    "
+  >
+    Edit Profile
+  </button>
+)}
           </div>
                 </div>
 
-        <div className="mt-8 bg-white rounded-[35px] p-8 shadow-xl">
-
-          <h2 className="text-2xl font-bold text-[#173926]">
-            Recent Order
-          </h2>
-
-          {recentOrder ? (
-
-            <div className="mt-6 grid md:grid-cols-4 gap-4">
-
-              <div className="bg-[#f7f5ef] p-5 rounded-2xl">
-                <p className="text-sm text-gray-500">
-                  Product
-                </p>
-
-                <h3 className="font-bold text-[#173926] mt-2">
-                  {recentOrder.product_name}
-                </h3>
-              </div>
-
-              <div className="bg-[#f7f5ef] p-5 rounded-2xl">
-                <p className="text-sm text-gray-500">
-                  Amount
-                </p>
-
-                <h3 className="font-bold text-[#173926] mt-2">
-                  ₹{recentOrder.amount}
-                </h3>
-              </div>
-
-              <div className="bg-[#f7f5ef] p-5 rounded-2xl">
-                <p className="text-sm text-gray-500">
-                  Status
-                </p>
-
-                <h3 className="font-bold text-[#173926] mt-2">
-                  {recentOrder.status}
-                </h3>
-              </div>
-
-              <div className="bg-[#f7f5ef] p-5 rounded-2xl">
-                <p className="text-sm text-gray-500">
-                  Order ID
-                </p>
-
-                <h3 className="font-bold text-[#173926] mt-2 break-all">
-                  {recentOrder.order_id}
-                </h3>
-              </div>
-
-            </div>
-
-          ) : (
-
-            <p className="mt-4 text-gray-500">
-              No orders found.
-            </p>
-
-          )}
-
-        </div>
+        
 
       </div>
     </main>
