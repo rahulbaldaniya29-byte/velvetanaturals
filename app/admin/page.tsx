@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 import { saveAs } from 'file-saver';
 export default function AdminPage() {
   const router = useRouter();
-  
   const [copied, setCopied] = useState('');
   function downloadInvoice(order: any) {
   const doc = new jsPDF();
@@ -36,6 +35,8 @@ export default function AdminPage() {
 }
 const [search, setSearch] = useState('');
   const [orders, setOrders] = useState<any[]>([]);
+  const [customerCount, setCustomerCount] =
+  useState(0);
   const totalRevenue = orders.reduce(
   (acc, order) => acc + order.amount,
   0
@@ -49,9 +50,7 @@ const pendingOrders = orders.filter(
   (order) => order.status !== 'Delivered'
 ).length;
 
-const totalCustomers = new Set(
-  orders.map((order) => order.customer_phone)
-).size;
+
 const today = new Date().toLocaleDateString('en-GB');
 
 const todaysOrders = orders.filter(
@@ -76,6 +75,7 @@ const todaysRevenue = orders
   }
 
   fetchOrders();
+  fetchCustomers();
 
 }, [router]);
 
@@ -91,6 +91,21 @@ const todaysRevenue = orders
     }
 
   }
+  async function fetchCustomers() {
+
+  const { count } =
+    await supabase
+      .from('customers')
+      .select('*', {
+        count: 'exact',
+        head: true,
+      });
+
+  setCustomerCount(
+    count || 0
+  );
+
+}
   function exportOrders() {
 
   const formattedOrders = orders.map((order) => ({
@@ -221,8 +236,8 @@ const filteredOrders = orders.filter((order) =>
     </p>
 
     <h2 className="mt-3 text-3xl font-black text-[#173926]">
-      ₹{totalRevenue}
-    </h2>
+  ₹{totalRevenue}
+</h2>
   </div>
 
   <div className="bg-white rounded-[30px] p-6 shadow-xl border border-[#e5ebe7]">
@@ -251,7 +266,7 @@ const filteredOrders = orders.filter((order) =>
     </p>
 
     <h2 className="mt-3 text-3xl font-black text-[#173926]">
-      {totalCustomers}
+      {customerCount}
     </h2>
   </div>
   <div className="bg-white rounded-[30px] p-6 shadow-xl border border-[#e5ebe7]">

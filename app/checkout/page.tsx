@@ -64,8 +64,63 @@ const totalAmount =
   }
 
   setCart(storedCart);
+const email =
+  localStorage.getItem(
+    'customerEmail'
+  );
 
+if (email) {
+
+  loadCustomer(email);
+
+}
 }, []);
+const loadCustomer = async (
+  email: string
+) => {
+
+  const { data } =
+    await supabase
+      .from('customers')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+  if (!data) return;
+
+  setName(
+    data.name || ''
+  );
+
+  setPhone(
+    data.phone || ''
+  );
+
+  setEmail(
+    data.email || ''
+  );
+
+  setAddress(
+  data.address || ''
+);
+
+setCity(
+  data.city || ''
+);
+
+setLandmark(
+  data.landmark || ''
+);
+
+setStateName(
+  data.state || ''
+);
+
+setPincode(
+  data.pincode || ''
+);
+
+};
   const handlePayment = async () => {
     if (cart.length === 0) {
 
@@ -163,6 +218,38 @@ setWarning('');
               status: 'Order Placed',
             }
           ]);
+          const { data: existingCustomer } =
+  await supabase
+    .from('customers')
+    .select('id')
+    .eq('email', email)
+    .single();
+
+if (!existingCustomer) {
+
+  await supabase
+    .from('customers')
+    .insert([
+      {
+        name,
+        email,
+        phone,
+      },
+    ]);
+
+}
+await supabase
+  .from('customers')
+  .update({
+    name,
+    phone,
+    address,
+    city,
+    landmark,
+    state: stateName,
+    pincode,
+  })
+  .eq('email', email);  
           await fetch('/api/send-email', {
 
   method: 'POST',

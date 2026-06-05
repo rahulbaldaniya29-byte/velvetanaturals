@@ -19,7 +19,9 @@ import { Download } from 'lucide-react';
 
 export default function OrdersPage() {
 const router = useRouter();
-  const [phone, setPhone] = useState('');
+
+  const [customerEmail, setCustomerEmail] =
+  useState('');
   const [copied, setCopied] = useState('');
   const [orders, setOrders] = useState<any[]>([]);
   const statusSteps = [
@@ -61,20 +63,47 @@ const downloadInvoice = (order: any) => {
 
 };
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (
+  email: string
+) => {
 
-    const { data } = await supabase
-      .from('orders')
-      .select('*')
-      .eq('customer_phone', phone)
-      .order('id', { ascending: false });
+  const { data } = await supabase
+    .from('orders')
+    .select('*')
+    .eq(
+      'customer_email',
+      email
+    )
+    .order('id', {
+      ascending: false,
+    });
 
-    if (data) {
-      setOrders(data);
-    }
+  if (data) {
+    setOrders(data);
+  }
 
-  };
+};
+useEffect(() => {
 
+  const email =
+    localStorage.getItem(
+      'customerEmail'
+    );
+
+  if (!email) {
+
+    window.location.href =
+      '/account/login';
+
+    return;
+
+  }
+
+  setCustomerEmail(email);
+
+  fetchOrders(email);
+
+}, []);
   useEffect(() => {
 
   const delivered = orders.some(
@@ -128,11 +157,17 @@ return (
   <div className="flex justify-end mb-4">
     <button
       onClick={async () => {
+
   await fetch('/api/logout', {
     method: 'POST',
   });
 
-  router.push('/login');
+  localStorage.removeItem(
+    'customerEmail'
+  );
+
+  router.push('/account/login');
+
 }}
       className="
         px-5
@@ -154,36 +189,39 @@ return (
             My Orders
           </h1>
 
-          <p className="mt-5 text-[#5a685f] text-lg">
-            Enter your phone number to view all orders
-          </p>
-
-        </div>
-
-        <div className="mt-12 bg-white rounded-[35px] p-5 md:p-8 shadow-xl border border-[#e5ebe7]">
-
-          <div className="flex flex-col md:flex-row gap-4">
-
-            <input
-              type="text"
-              placeholder="Enter Phone Number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="flex-1 px-5 py-4 rounded-2xl border border-[#dfe7e1] outline-none"
-            />
-
-            <button
-              onClick={fetchOrders}
-              className="px-8 py-4 rounded-2xl bg-[#173926] hover:bg-[#28543c] text-white font-semibold transition-all duration-300"
-            >
-              View Orders
-            </button>
-
-          </div>
+        <p className="mt-5 text-[#5a685f] text-lg">
+  View and track all your orders
+</p>
 
         </div>
 
         <div className="mt-10 grid gap-6">
+          {orders.length === 0 && (
+
+  <div className="
+    bg-white
+    rounded-3xl
+    p-10
+    text-center
+    shadow-xl
+  ">
+    <h2 className="
+      text-2xl
+      font-bold
+      text-[#173926]
+    ">
+      No Orders Found
+    </h2>
+
+    <p className="
+      mt-3
+      text-gray-500
+    ">
+      You have not placed any orders yet.
+    </p>
+  </div>
+
+)}
           {orders.map((order) => (
 
             <div

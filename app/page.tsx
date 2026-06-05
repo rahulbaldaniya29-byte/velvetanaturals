@@ -7,6 +7,7 @@ export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
 
 const [messageName, setMessageName] = useState('');
@@ -20,6 +21,7 @@ const [heroOffset, setHeroOffset] = useState({
   x: 0,
   y: 0,
 });
+
 useEffect(() => {
 
   const updateCart = () => {
@@ -46,6 +48,16 @@ useEffect(() => {
   }, 500);
 
   return () => clearInterval(interval);
+
+}, []);
+useEffect(() => {
+
+  const email =
+    localStorage.getItem(
+      'customerEmail'
+    );
+
+  setLoggedIn(!!email);
 
 }, []);
 
@@ -238,6 +250,15 @@ if (loading) {
             <a href="#products" className="hover:text-[#d6b37a] transition-all duration-300">Products</a>
             <a href="#about" className="hover:text-[#d6b37a] transition-all duration-300">Why Velveta</a>
             <a href="#contact" className="hover:text-[#d6b37a] transition-all duration-300">Contact</a>
+
+            <button
+  onClick={() => {
+    window.location.href = '/orders';
+  }}
+  className="hover:text-[#d6b37a] transition-all duration-300"
+>
+  My Orders
+</button>
           </nav>
 
           {/* RIGHT SIDE */}
@@ -251,7 +272,16 @@ if (loading) {
             </button>
 
 
-            <button className="hidden md:block px-5 py-2 rounded-full bg-[#4f7c5d] text-white hover:bg-[#5e9170] transition">
+            <button onClick={() => {
+
+  document
+    .getElementById('products')
+    ?.scrollIntoView({
+      behavior: 'smooth',
+    });
+
+}}
+ className="hidden md:block px-5 py-2 rounded-full bg-[#4f7c5d] text-white hover:bg-[#5e9170] transition">
               Shop Now
             </button>
             <button
@@ -271,11 +301,18 @@ if (loading) {
 </button>
 <button
   onClick={() => {
-    window.location.href = '/orders';
+
+    window.location.href =
+      loggedIn
+        ? '/account'
+        : '/account/login';
+
   }}
   className="relative z-[999] px-3 md:px-5 py-2 text-sm md:text-base rounded-full bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300"
 >
-  My Orders
+  {loggedIn
+    ? 'My Account'
+    : 'Login'}
 </button>
 
           </div>
@@ -290,6 +327,15 @@ if (loading) {
               <a href="#products" className="hover:text-[#d6b37a] transition">Products</a>
               <a href="#about" className="hover:text-[#d6b37a] transition">Why Velveta</a>
               <a href="#contact" className="hover:text-[#d6b37a] transition">Contact</a>
+
+              <button
+  onClick={() => {
+    window.location.href = '/orders';
+  }}
+  className="text-left hover:text-[#d6b37a] transition"
+>
+  My Orders
+</button>
             </div>
           </div>
         )}
@@ -709,9 +755,12 @@ setCartCount(totalItems);
     ]);
 
   setMessageName('');
-  setMessageEmail('');
-  setMessageText('');
-  setSuccessMessage('');
+setMessageEmail('');
+setMessageText('');
+
+setSuccessMessage(
+  'Message Sent Successfully ✅'
+);
   setTimeout(() => {
   setSuccessMessage('');
 }, 2500);
