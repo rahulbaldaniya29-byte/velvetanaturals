@@ -32,35 +32,152 @@ const router = useRouter();
   'Delivered',
 ];
 const downloadInvoice = (order: any) => {
-const router = useRouter();
+
   const doc = new jsPDF();
 
-  doc.setFontSize(24);
+doc.setFillColor(23, 57, 38);
+doc.rect(0, 0, 210, 35, 'F');
 
-  doc.text('Velveta Naturals', 20, 20);
+doc.setTextColor(255, 255, 255);
+doc.setFontSize(26);
+doc.text('VELVETA NATURALS', 20, 22);
 
-  doc.setFontSize(14);
+doc.setFontSize(11);
+doc.text(
+  'Premium Ayurvedic & Natural Products',
+  20,
+  30
+);
 
-  doc.text('Invoice', 20, 35);
+doc.setTextColor(0, 0, 0);
 
-  doc.text(`Product: ${order.product_name}`, 20, 55);
+doc.setFontSize(22);
+doc.text('INVOICE', 150, 55);
 
-  doc.text(`Amount: Rs. ${order.amount}`, 20, 70);
+doc.setFontSize(11);
+doc.text(
+  `Order ID: ${order.order_id}`,
+  20,
+  50
+);
 
-  doc.text(`Customer: ${order.customer_name}`, 20, 85);
+doc.text(
+  `Date: ${order.order_date}`,
+  20,
+  58
+);
 
-  doc.text(`Phone: ${order.customer_phone}`, 20, 100);
+doc.roundedRect(
+  15,
+  70,
+  180,
+  45,
+  4,
+  4
+);
 
-  doc.text(`Address: ${order.customer_address}`, 20, 115);
+doc.setFontSize(13);
+doc.text(
+  'Customer Details',
+  20,
+  82
+);
 
-  doc.text(`Status: ${order.status}`, 20, 130);
+doc.setFontSize(11);
 
-  doc.text(`Date: ${order.order_date}`, 20, 145);
+doc.text(
+  `Name: ${order.customer_name}`,
+  20,
+  94
+);
 
-  doc.text(`Payment ID: ${order.payment_id}`, 20, 160);
-  doc.text(`Order ID: ${order.order_id}`, 20, 40);
+doc.text(
+  `Phone: ${order.customer_phone}`,
+  20,
+  102
+);
 
-  doc.save(`invoice-${order.id}.pdf`);
+doc.text(
+  `Address: ${order.customer_address}`,
+  20,
+  110
+);
+
+doc.setFillColor(23, 57, 38);
+
+doc.rect(
+  15,
+  130,
+  180,
+  12,
+  'F'
+);
+
+doc.setTextColor(255,255,255);
+
+doc.text('Product', 20, 138);
+
+doc.text('Amount', 160, 138);
+
+doc.setTextColor(0,0,0);
+
+doc.rect(
+  15,
+  142,
+  180,
+  18
+);
+
+doc.text(
+  order.product_name,
+  20,
+  153
+);
+
+doc.text(
+  `Rs. ${order.amount}`,
+  160,
+  153
+);
+
+doc.setFontSize(16);
+
+doc.text(
+  `Grand Total: Rs. ${order.amount}`,
+  120,
+  185
+);
+
+doc.text(
+  `Status: ${order.status}`,
+  20,
+  185
+);
+
+doc.line(
+  15,
+  250,
+  195,
+  250
+);
+
+doc.setFontSize(10);
+
+doc.text(
+  'Thank you for shopping with Velveta Naturals',
+  20,
+  260
+);
+
+doc.text(
+  'www.velvetanaturals.com',
+  20,
+  268
+);
+
+doc.save(
+  `invoice-${order.order_id}.pdf`
+);
 
 };
 
