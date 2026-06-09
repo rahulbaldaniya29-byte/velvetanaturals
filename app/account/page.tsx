@@ -81,14 +81,13 @@ setLandmark(data.landmark || '');
 
   const logout = () => {
 
-    localStorage.removeItem(
-      'customerEmail'
-    );
+  localStorage.removeItem(
+    'customerEmail'
+  );
 
-    window.location.href =
-      '/account/login';
+  window.location.replace('/');
 
-  };
+};
   
 const saveProfile = async () => {
 
@@ -202,8 +201,9 @@ setTimeout(() => {
 
 </div>
               <div>
+  
   <h1 className="text-4xl md:text-5xl font-black text-[#173926]">
-    Account Settings
+    {name || 'Customer'}
   </h1>
 
   <p className="mt-2 text-[#6b7280]">
@@ -233,6 +233,44 @@ setTimeout(() => {
           </div>
 
         </div>
+        <div className="mt-8 bg-white rounded-[35px] p-8 shadow-xl border border-[#e5ebe7]">
+
+  <div className="flex items-center justify-between mb-4">
+
+    <div>
+
+      <p className="text-[#c3955d] font-bold tracking-[2px] uppercase">
+        Profile Strength
+      </p>
+
+      <h3 className="text-2xl font-bold text-[#173926]">
+        {profileCompletion}% Complete
+      </h3>
+
+    </div>
+
+    <div className="text-4xl">
+      🚀
+    </div>
+
+  </div>
+
+  <div className="w-full h-4 bg-[#eceeea] rounded-full overflow-hidden">
+
+    <div
+      className="h-full bg-gradient-to-r from-[#173926] to-[#c3955d] rounded-full transition-all duration-500"
+      style={{
+        width: `${profileCompletion}%`,
+      }}
+    />
+
+  </div>
+
+  <p className="mt-3 text-[#6b7280]">
+    Complete your profile to enjoy a faster checkout experience.
+  </p>
+
+</div>
 
     <div className="mt-8 bg-white rounded-[35px] p-8 shadow-xl">
           <h2 className="text-2xl font-bold text-[#173926]">Profile Information</h2>
@@ -308,17 +346,20 @@ setTimeout(() => {
 />
             </div>
               <div>
-  <label className="block text-gray-500 mb-2">
+  <label htmlFor="address" className="block text-gray-500 mb-2">
     Address
   </label>
 
   <input
+    id="address"
     type="text"
     value={address}
     onChange={(e) =>
       setAddress(e.target.value)
     }
     disabled={!isEditing}
+    title="Address"
+    placeholder="Enter your address"
     className={`
   w-full
   rounded-2xl
@@ -335,17 +376,20 @@ setTimeout(() => {
 </div>
 
 <div>
-  <label className="block text-gray-500 mb-2">
+  <label htmlFor="city" className="block text-gray-500 mb-2">
     City
   </label>
 
   <input
+    id="city"
     type="text"
     value={city}
     onChange={(e) =>
       setCity(e.target.value)
     }
     disabled={!isEditing}
+    title="City"
+    placeholder="Enter your city"
     className={`
   w-full
   rounded-2xl
@@ -362,17 +406,20 @@ setTimeout(() => {
 </div>
 
 <div>
-  <label className="block text-gray-500 mb-2">
+  <label htmlFor="state" className="block text-gray-500 mb-2">
     State
   </label>
 
   <input
+    id="state"
     type="text"
     value={stateName}
     onChange={(e) =>
       setStateName(e.target.value)
     }
     disabled={!isEditing}
+    title="State"
+    placeholder="Enter your state"
     className={`
   w-full
   rounded-2xl
@@ -389,17 +436,20 @@ setTimeout(() => {
 </div>
 
 <div>
-  <label className="block text-gray-500 mb-2">
+  <label htmlFor="pincode" className="block text-gray-500 mb-2">
     Pincode
   </label>
 
   <input
+    id="pincode"
     type="text"
     value={pincode}
     onChange={(e) =>
       setPincode(e.target.value)
     }
     disabled={!isEditing}
+    title="Pincode"
+    placeholder="Enter your pincode"
     className={`
   w-full
   rounded-2xl
@@ -416,17 +466,20 @@ setTimeout(() => {
 </div>
 
 <div>
-  <label className="block text-gray-500 mb-2">
+  <label htmlFor="landmark" className="block text-gray-500 mb-2">
     Landmark
   </label>
 
   <input
+    id="landmark"
     type="text"
     value={landmark}
     onChange={(e) =>
       setLandmark(e.target.value)
     }
     disabled={!isEditing}
+    title="Landmark"
+    placeholder="Enter a nearby landmark"
     className={`
   w-full
   rounded-2xl
@@ -476,6 +529,7 @@ setTimeout(() => {
   </button>
 )}
           </div>
+          
                 </div>
 
         

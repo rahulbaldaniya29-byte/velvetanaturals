@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function AccountLoginPage() {
 
@@ -11,6 +12,7 @@ export default function AccountLoginPage() {
   const [otpSent, setOtpSent] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [timer, setTimer] = useState(60);
   const sendOtp = async () => {
     const res = await fetch(
       '/api/send-otp',
@@ -27,13 +29,47 @@ export default function AccountLoginPage() {
     );
 
     if (res.ok) {
+      setTimer(60);
       setOtpSent(true);
       setMessage('OTP sent successfully ✓');
 setError('');
     }
 
   };
+  useEffect(() => {
 
+  if (
+    !otpSent ||
+    timer === 0
+  ) return;
+
+  const interval =
+    setInterval(() => {
+
+      setTimer(
+        (prev) => prev - 1
+      );
+
+    }, 1000);
+
+  return () =>
+    clearInterval(interval);
+
+}, [otpSent, timer]);
+useEffect(() => {
+
+  const email =
+    localStorage.getItem(
+      'customerEmail'
+    );
+
+  if (email) {
+
+    router.replace('/');
+
+  }
+
+}, [router]);
   const verifyOtp = async () => {
 
     const res = await fetch(
@@ -51,17 +87,32 @@ setError('');
       }
     );
 
-    if (res.ok) {
+  if (res.ok) {
 
-      localStorage.setItem(
-        'customerEmail',
-        email
-      );
+  localStorage.setItem(
+    'customerEmail',
+    email
+  );
 
-      window.location.href =
-        '/account';
+  const redirect =
+    localStorage.getItem(
+      'redirectAfterLogin'
+    );
 
-    } else {
+  if (redirect) {
+
+    localStorage.removeItem(
+      'redirectAfterLogin'
+    );
+
+    router.replace(redirect);
+
+  } else {
+router.replace('/account');
+
+  }
+
+}else {
 
       setError('Invalid OTP');
 setMessage('');
@@ -246,7 +297,31 @@ duration-300
             >
               Verify OTP
             </button>
+{timer > 0 ? (
 
+  <p className="mt-4 text-center text-gray-500">
+    Resend OTP in {timer}s
+  </p>
+
+) : (
+
+  <button
+    onClick={sendOtp}
+    className="
+      mt-4
+      w-full
+      border
+      border-[#173926]
+      text-[#173926]
+      py-3
+      rounded-2xl
+      font-semibold
+    "
+  >
+    Resend OTP
+  </button>
+
+)}
           </>
 
         )}

@@ -3,7 +3,16 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-
+import { useRouter } from 'next/navigation';
+import {
+  User,
+  Phone,
+  Mail,
+  MapPin,
+  Building2,
+  Landmark,
+  Map
+} from 'lucide-react';
 declare global {
   interface Window {
     Razorpay: any;
@@ -19,7 +28,7 @@ export default function CheckoutPage() {
   const [city, setCity] = useState('');
   const [cart, setCart] = useState<any[]>([]);
   const [pincode, setPincode] = useState('');
-
+  const router = useRouter();
   const [landmark, setLandmark] = useState('');
 const [stateName, setStateName] = useState('');
   
@@ -50,6 +59,25 @@ const totalAmount =
   subtotal + deliveryCharge;
   useEffect(() => {
 
+    const customerEmail =
+  localStorage.getItem(
+    'customerEmail'
+  );
+
+if (!customerEmail) {
+
+  localStorage.setItem(
+    'redirectAfterLogin',
+    '/checkout'
+  );
+
+  router.replace(
+    '/account/login'
+  );
+
+  return;
+}
+
   const storedCart =
     JSON.parse(
       localStorage.getItem('checkoutCart') || '[]'
@@ -64,14 +92,10 @@ const totalAmount =
   }
 
   setCart(storedCart);
-const email =
-  localStorage.getItem(
-    'customerEmail'
-  );
 
-if (email) {
+if (customerEmail) {
 
-  loadCustomer(email);
+  loadCustomer(customerEmail);
 
 }
 }, []);
@@ -122,7 +146,18 @@ setPincode(
 
 };
   const handlePayment = async () => {
-
+if (
+  !name ||
+  !phone ||
+  !address ||
+  !city ||
+  !pincode
+) {
+  alert(
+    'Please fill all required fields'
+  );
+  return;
+}
     
     if (cart.length === 0) {
 
@@ -142,6 +177,7 @@ setPincode(
 ) {
 
   setWarning('Please fill all delivery details 😄');
+
 
   return;
 
@@ -307,6 +343,7 @@ localStorage.removeItem('checkoutCart');
 
   return (
 <main className="min-h-screen bg-[#f7f5ef] py-20 px-6 pb-40 md:pb-20">
+
         <style jsx>{`
   @keyframes fadeInUp {
     from {
@@ -320,6 +357,7 @@ localStorage.removeItem('checkoutCart');
     }
   }
 `}</style>
+
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 animate-[fadeInUp_0.8s_ease-out]">
 
@@ -468,71 +506,122 @@ localStorage.removeItem('checkoutCart');
         {/* FORM */}
         <div className="bg-white rounded-[35px] p-5 md:p-10 shadow-xl">
 
-          <h2 className="text-2xl md:text-3xl font-bold text-[#173926] mb-8">
+          <h2 className="text-3xl md:text-4xl font-black text-[#173926]">
             Delivery Details
           </h2>
+          <p className="text-[#6b7280] mt-2 mb-6">
+  Enter your delivery information to complete your order.
+</p>
 
           <div className="space-y-5">
 
-            <input
-              type="text"
-              placeholder="Full Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-5 py-4 rounded-2xl border border-[#dfe7e1] outline-none"
-            />
+            <div className="relative">
 
+  <User
+  size={20}
+  className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c3955d]"
+/>
+
+  <input
+    type="text"
+    placeholder="Full Name"
+    value={name}
+    onChange={(e) => setName(e.target.value)}
+    className="w-full pl-14 pr-5 py-4 rounded-3xl border-2 border-[#e5ebe7] bg-white outline-none focus:border-[#173926] focus:shadow-lg transition-all"
+  />
+
+</div>
+<div className="relative">
+  
+         <Phone
+  size={20}
+  className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c3955d]"
+/>
             <input
               type="text"
               placeholder="Phone Number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-5 py-4 rounded-2xl border border-[#dfe7e1] outline-none"
+              className="w-full pl-14 pr-5 py-4 rounded-3xl border-2 border-[#e5ebe7] bg-white outline-none focus:border-[#173926] focus:shadow-lg transition-all"
             />
+            </div>
+            <div className="relative">
+             <Mail
+  size={20}
+  className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c3955d]"
+/>
             <input
   type="email"
   placeholder="Email Address"
   value={email}
   onChange={(e) => setEmail(e.target.value)}
-  className="w-full px-5 py-4 rounded-2xl border border-[#dfe7e1] outline-none"
+  className="w-full pl-14 pr-5 py-4 rounded-3xl border-2 border-[#e5ebe7] bg-white outline-none focus:border-[#173926] focus:shadow-lg transition-all"
 />
-
+</div>
+<div className="relative">
+<MapPin
+  size={20}
+  className="absolute left-5 top-6 text-[#c3955d]"
+/>
             <textarea
               placeholder="Full Address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="w-full px-5 py-4 rounded-2xl border border-[#dfe7e1] outline-none"
+className="w-full pl-14 pr-5 pt-4 pb-4 min-h-[90px] rounded-3xl border-2 border-[#e5ebe7] bg-white outline-none focus:border-[#173926] focus:shadow-lg transition-all resize-none"
             />
-
+</div>
+<div className="relative">
+<Building2
+  size={20}
+  className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c3955d]"
+/>
             <input
               type="text"
               placeholder="City"
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              className="w-full px-5 py-4 rounded-2xl border border-[#dfe7e1] outline-none"
+              className="w-full pl-14 pr-5 py-4 rounded-3xl border-2 border-[#e5ebe7] bg-white outline-none focus:border-[#173926] focus:shadow-lg transition-all"
             />
+            </div>
+            <div className="relative">
+            <Landmark
+  size={20}
+  className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c3955d]"
+/>
 <input
   type="text"
   placeholder="Landmark"
   value={landmark}
   onChange={(e) => setLandmark(e.target.value)}
-  className="w-full px-5 py-4 rounded-2xl border border-[#dfe7e1] outline-none"
+  className="w-full pl-14 pr-5 py-4 rounded-3xl border-2 border-[#e5ebe7] bg-white outline-none focus:border-[#173926] focus:shadow-lg transition-all"
 />
-
+</div>
+<div className="relative">
+<Map
+  size={20}
+  className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c3955d]"
+/>
 <input
   type="text"
   placeholder="State"
   value={stateName}
   onChange={(e) => setStateName(e.target.value)}
-  className="w-full px-5 py-4 rounded-2xl border border-[#dfe7e1] outline-none"
+  className="w-full pl-14 pr-5 py-4 rounded-3xl border-2 border-[#e5ebe7] bg-white outline-none focus:border-[#173926] focus:shadow-lg transition-all"
+/>
+</div>
+<div className="relative">
+<MapPin
+  size={20}
+  className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c3955d]"
 />
             <input
               type="text"
               placeholder="Pincode"
               value={pincode}
               onChange={(e) => setPincode(e.target.value)}
-              className="w-full px-5 py-4 rounded-2xl border border-[#dfe7e1] outline-none"
+              className="w-full pl-14 pr-5 py-4 rounded-3xl border-2 border-[#e5ebe7] bg-white outline-none focus:border-[#173926] focus:shadow-lg transition-all"
             />
+            </div>
 {warning && (
 
   <div className="bg-red-100 border border-red-300 text-red-600 px-5 py-4 rounded-2xl text-center font-semibold">
@@ -544,9 +633,9 @@ localStorage.removeItem('checkoutCart');
 )}
             <button
               onClick={handlePayment}
-              className="w-full md:w-full fixed md:static bottom-4 left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 z-50 md:z-auto max-w-[90%] md:max-w-full py-5 rounded-2xl bg-[#173926] hover:bg-[#28543c] hover:scale-[1.02] active:scale-[0.98] text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-2xl"
+              className="w-full md:w-full fixed md:static bottom-4 left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 z-50 md:z-auto max-w-[90%] md:max-w-full py-5 rounded-3xl bg-gradient-to-r from-[#173926] to-[#28543c] text-white font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
             >
-              {loading ? 'Processing...' : 'Confirm Order'}
+              {loading ? 'Processing...' : '🚀 Secure Checkout'}
             </button>
 
           </div>

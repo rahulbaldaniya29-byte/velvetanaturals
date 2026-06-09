@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Script from 'next/script';
-import { useRouter } from 'next/navigation';
+
 import jsPDF from 'jspdf';
+import { useRouter } from 'next/navigation';
 
 import { supabase } from '@/lib/supabase';
 
@@ -31,7 +32,7 @@ const router = useRouter();
   'Delivered',
 ];
 const downloadInvoice = (order: any) => {
-
+const router = useRouter();
   const doc = new jsPDF();
 
   doc.setFontSize(24);
@@ -84,6 +85,8 @@ const downloadInvoice = (order: any) => {
 
 };
 useEffect(() => {
+
+  
 
   const email =
     localStorage.getItem(
@@ -155,37 +158,14 @@ return (
       <div className="max-w-7xl mx-auto">
 
   <div className="flex justify-end mb-4">
-    <button
-      onClick={async () => {
-
-  await fetch('/api/logout', {
-    method: 'POST',
-  });
-
-  localStorage.removeItem(
-    'customerEmail'
-  );
-
-  router.push('/account/login');
-
-}}
-      className="
-        px-5
-        py-2
-        rounded-xl
-        bg-red-600
-        hover:bg-red-700
-        text-white
-        font-semibold
-      "
-    >
-      Logout
-    </button>
+    
   </div>
 
   <div className="text-center">
-
-          <h1 className="text-3xl md:text-5xl font-black text-[#173926]">
+<p className="text-[#c3955d] font-bold tracking-[3px] uppercase mb-3">
+  Order Dashboard
+</p>
+          <h1 className="text-4xl md:text-6xl font-black text-[#173926] tracking-tight">
             My Orders
           </h1>
 
@@ -205,6 +185,9 @@ return (
     text-center
     shadow-xl
   ">
+    <div className="text-7xl mb-4">
+  📦
+</div>
     <h2 className="
       text-2xl
       font-bold
@@ -219,14 +202,21 @@ return (
     ">
       You have not placed any orders yet.
     </p>
+    <a
+  href="/"
+  className="inline-block mt-6 px-8 py-4 rounded-3xl bg-gradient-to-r from-[#173926] to-[#28543c] text-white font-semibold shadow-xl hover:scale-105 transition-all"
+>
+  Start Shopping
+</a>
   </div>
+  
 
 )}
           {orders.map((order) => (
 
             <div
   key={order.id}
-  className="bg-white rounded-[40px] p-8 md:p-10 shadow-xl border border-[#e5ebe7]"
+  className="bg-white rounded-[40px] p-8 md:p-10 shadow-xl border border-[#e5ebe7] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
 >
 
 <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-6">
@@ -276,7 +266,7 @@ return (
 
               <div className="flex justify-center">
   <div
-    className={`px-10 py-4 rounded-full text-white font-bold shadow-lg ${
+    className={`px-10 py-4 rounded-full text-white font-bold shadow-2xl tracking-wide ${
       order.status === 'Packed'
         ? 'bg-gradient-to-r from-yellow-400 to-orange-500'
         : order.status === 'Shipped'
@@ -340,7 +330,15 @@ return (
       return (
 
         <div key={step} className="relative">
-
+{index !== statusSteps.length - 1 && (
+  <div
+    className={`absolute top-8 md:top-12 left-[60%] w-full h-2 rounded-full ${
+      completed
+        ? 'bg-gradient-to-r from-[#173926] via-[#28543c] to-[#c3955d]'
+        : 'bg-gray-200'
+    }`}
+  />
+)}
           <div
             className={`
               w-16 h-16 md:w-24 md:h-24 mx-auto
@@ -413,7 +411,7 @@ return (
 </div>
               <div className="mt-8 grid md:grid-cols-2 gap-6">
 
-                <div className="bg-[#f7f5ef] p-6 rounded-3xl min-h-[180px]">
+                <div className="bg-[#f7f5ef] p-6 rounded-3xl min-h-[180px] border border-[#e5ebe7]">
 
                   <p className="text-sm text-[#5a685f]">
                     Delivery Address
@@ -445,22 +443,7 @@ return (
 
     <button
       onClick={() => downloadInvoice(order)}
-      className="
-      w-full md:w-auto
-  justify-center
-  px-5
-  py-3
-  rounded-2xl
-  bg-[#173926]
-  hover:bg-[#28543c]
-  text-white
-  font-semibold
-  transition-all
-  duration-300
-  flex
-  items-center
-  gap-2
-" 
+      className="w-full md:w-auto justify-center px-6 py-3 rounded-3xl bg-gradient-to-r from-[#173926] to-[#28543c] text-white font-semibold shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
     >
        <Download size={18} />
       Download Invoice

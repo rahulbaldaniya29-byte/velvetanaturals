@@ -223,16 +223,30 @@ updatedCart[index].quantity =
       <div className="mt-14 flex justify-center md:justify-end">
 
   <button
-    onClick={() => {
+   onClick={() => {
 
-      localStorage.setItem(
-        'checkoutCart',
-        JSON.stringify(cart)
-      );
+  const email =
+    localStorage.getItem(
+      'customerEmail'
+    );
 
-      window.location.href = '/checkout';
+  if (!email) {
 
-    }}
+    localStorage.setItem(
+      'redirectAfterLogin',
+      '/checkout'
+    );
+
+    window.location.href =
+      '/account/login';
+
+    return;
+  }
+
+  window.location.href =
+    '/checkout';
+
+}}
 
     className="px-6 md:px-10 py-4 md:py-5 rounded-full bg-[#173926] hover:bg-[#28543c] text-white text-lg font-semibold transition-all duration-300 shadow-xl hover:scale-105"
   >

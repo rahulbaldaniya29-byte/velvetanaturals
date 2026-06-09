@@ -42,37 +42,41 @@ export default function SuccessPage() {
 
       <div className="max-w-xl w-full bg-white rounded-[40px] shadow-2xl p-12 text-center border border-[#e7ece8]">
 
-        <div className="w-24 h-24 rounded-full bg-[#173926] text-white flex items-center justify-center text-5xl mx-auto animate-pulse">
+        <div className="w-28 h-28 rounded-full bg-gradient-to-r from-[#173926] to-[#28543c] text-white flex items-center justify-center text-6xl mx-auto shadow-2xl animate-bounce">
           ✓
         </div>
-
+<p className="text-[#c3955d] font-bold tracking-[3px] uppercase">
+  Order Confirmed
+</p>
         <h1 className="mt-8 text-5xl font-black text-[#173926]">
           Payment Successful
         </h1>
 
         <p className="mt-6 text-[#5a685f] text-lg leading-relaxed">
           Your order has been placed successfully.
-          <br />
-          Our team will contact you shortly regarding delivery updates.
+          
         </p>
 
         <div className="mt-10 flex flex-col md:flex-row gap-5 justify-center">
 
   <a
     href="/orders"
-    className="px-8 py-4 rounded-2xl bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300 hover:scale-105"
+    className="px-8 py-4 rounded-3xl bg-gradient-to-r from-[#173926] to-[#28543c] text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
   >
     Track My Order
   </a>
 
   <a
     href="/"
-    className="px-8 py-4 rounded-2xl border border-[#173926] text-[#173926] hover:bg-[#173926] hover:text-white transition-all duration-300 hover:scale-105"
+    className="px-8 py-4 rounded-3xl border-2 border-[#173926] text-[#173926] font-semibold hover:bg-[#173926] hover:text-white transition-all duration-300 hover:scale-105"
   >
     Continue Shopping
   </a>
 
 </div>
+<p className="mt-8 text-sm text-gray-500">
+  You will be redirected to the home page in 20 seconds.
+</p>
 
       </div>
 

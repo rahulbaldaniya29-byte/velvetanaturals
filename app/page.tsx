@@ -9,7 +9,8 @@ export default function HomePage() {
   const [cartCount, setCartCount] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
-
+const [accountMenu, setAccountMenu] = useState(false);
+  
 const [messageName, setMessageName] = useState('');
 const [messageEmail, setMessageEmail] = useState('');
 const [messageText, setMessageText] = useState('');
@@ -240,10 +241,16 @@ if (loading) {
 <header className="fixed top-0 left-0 w-full z-[9999] bg-[#173926]/95 border-b border-white/10 shadow-lg">
 <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
           {/* LOGO */}
-          <h1 className="text-2xl md:text-3xl font-bold text-[#d6b37a]">
-            Velveta
-          </h1>
-
+<div className="flex items-center">
+  <Image
+    src="/logo.png"
+    alt="Velveta Naturals"
+    width={110}
+    height={38}
+    priority
+    className="h-9 w-auto object-contain drop-shadow-md"
+  />
+</div>
           {/* DESKTOP MENU */}
           <nav className="hidden md:flex items-center gap-10 text-white">
             <a href="#home" className="hover:text-[#d6b37a] transition-all duration-300">Home</a>
@@ -283,7 +290,7 @@ if (loading) {
   onClick={() => {
     window.location.href = '/cart';
   }}
-  className="relative z-[999] px-3 md:px-5 py-2 text-sm md:text-base rounded-full bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300"
+  className="relative z-[999] px-3 md:px-5 py-2 text-xs md:text-base rounded-full bg-gradient-to-r from-[#173926] to-[#28543c] text-white shadow-lg hover:bg-[#28543c] transition-all duration-300"
 >
   🛒 Cart
 
@@ -294,21 +301,57 @@ if (loading) {
   )}
 
 </button>
-<button
-  onClick={() => {
+<div className="relative">
 
-    window.location.href =
-      loggedIn
-        ? '/account'
-        : '/account/login';
+  <button
+    onClick={() => {
+      if (!loggedIn) {
+        window.location.href = '/account/login';
+        return;
+      }
 
-  }}
-  className="relative z-[999] px-3 md:px-5 py-2 text-sm md:text-base rounded-full bg-[#173926] text-white hover:bg-[#28543c] transition-all duration-300"
+      setAccountMenu(!accountMenu);
+    }}
+    className="px-4 md:px-5 py-2 rounded-full bg-gradient-to-r from-[#173926] to-[#28543c] text-white text-sm md:text-base shadow-lg"
+  >
+    {loggedIn ? 'Account' : 'Login'}
+  </button>
+
+  {loggedIn && accountMenu && (
+   <div
+  className="absolute top-14 right-0 bg-white rounded-3xl shadow-2xl border border-gray-100 w-56 overflow-hidden z-50"
 >
-  {loggedIn
-    ? 'My Account'
-    : 'Login'}
+      <button
+  onClick={() => window.location.href='/account'}
+  className="w-full flex items-center gap-3 px-5 py-4 text-[#173926] font-semibold hover:bg-[#f7f5ef] hover:pl-7 transition-all duration-300 border-b border-gray-100"
+>
+  <span className="text-lg">👤</span>
+  <span>My Account</span>
 </button>
+
+      <button
+  onClick={() => window.location.href='/orders'}
+  className="w-full flex items-center gap-3 px-5 py-4 text-[#173926] font-semibold hover:bg-[#f7f5ef] hover:pl-7 transition-all duration-300 border-b border-gray-100"
+>
+  <span className="text-lg">📦</span>
+  <span>My Orders</span>
+</button>
+
+      <button
+  onClick={() => {
+    localStorage.removeItem('customerEmail');
+    window.location.href = '/';
+  }}
+  className="w-full flex items-center gap-3 px-5 py-4 text-red-500 font-semibold hover:bg-red-50 hover:pl-7 transition-all duration-300"
+>
+  <span className="text-lg">🚪</span>
+  <span>Logout</span>
+</button>
+
+    </div>
+  )}
+
+</div>
 
           </div>
 
@@ -349,18 +392,18 @@ if (loading) {
         <div className="absolute bottom-[-120px] right-[-120px] w-[400px] h-[400px] bg-[#c3955d]/20 rounded-full blur-3xl animate-pulse"></div>
 
         {/* Content */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-14 items-center text-center md:text-left relative z-10">
 
           {/* LEFT */}
           <div>
            
 
-            <h1 className="fade-up mt-8 text-4xl sm:text-5xl md:text-7xl font-black leading-tight text-white animate-[heroText_1.2s_ease-out]">
+            <h1 className="fade-up mt-6 text-3xl sm:text-5xl md:text-7xl font-black leading-tight text-white text-center md:text-left animate-[heroText_1.2s_ease-out]">
               Natural <span className="text-[#c3955d]">Luxury</span> <br />
               For Modern Wellness
             </h1>
 
-            <p className="fade-up mt-8 text-lg leading-relaxed text-white/70 max-w-xl">
+            <p className="fade-up mt-6 text-base md:text-lg leading-relaxed text-white/70 max-w-xl text-center md:text-left">
               Discover powerful Ayurvedic formulations crafted with nature,
               science, and luxury wellness experience for modern lifestyles.
             </p>
@@ -385,9 +428,9 @@ if (loading) {
       : '/product2.jpeg'
   }
   alt='Velveta Product'
-width={380}
-height={380}
-              className="object-contain h-auto relative z-10 transition-all duration-700 drop-shadow-[0_20px_80px_rgba(0,0,0,0.6)] floating-animation animate-[float_5s_ease-in-out_infinite]"
+width={320}
+height={320}
+              className="object-contain w-[260px] md:w-auto h-auto relative z-10 transition-all duration-700 drop-shadow-[0_20px_80px_rgba(0,0,0,0.6)] floating-animation animate-[float_5s_ease-in-out_infinite]"
               style={{
   transform: `translate(${heroOffset.x}px, ${heroOffset.y}px)`,
 }}
@@ -429,31 +472,38 @@ height={380}
                 />
               </div>
 
-              <div className="p-5 md:p-8">
+              <div className="p-5 md:p-8 text-center md:text-left">
                 <h3 className="text-2xl md:text-3xl font-bold text-[#173926]">Arogya Churn</h3>
                 <p className="mt-4 text-[#5a685f] leading-relaxed">
                   Herbal Ayurvedic formula designed to improve digestion,
                   immunity, detoxification, and natural daily energy.
                 </p>
-                <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="mt-8 flex flex-col md:flex-row items-center gap-4">
                   <span className="text-2xl md:text-3xl font-bold text-[#c3955d]">₹799</span>
                   
          <button
   onClick={() => {
+const email =
+  localStorage.getItem(
+    'customerEmail'
+  );
 
-localStorage.setItem(
-  'checkoutCart',
-  JSON.stringify([
-    {
-      name: 'Arogya Churn',
-      price: 799,
-      quantity: 1,
-    }
-  ])
-);
+if (!email) {
 
-window.location.href = '/checkout';
-  }}
+  localStorage.setItem(
+    'redirectAfterLogin',
+    '/checkout'
+  );
+
+  window.location.href =
+    '/account/login';
+
+  return;
+}
+
+window.location.href =
+  '/checkout';
+}}
 
   className="relative z-[999]  mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
 >
@@ -529,31 +579,37 @@ setCartCount(totalItems);
                 />
               </div>
 
-              <div className="p-5 md:p-8">
+              <div className="p-5 md:p-8 text-center md:text-left">
                 <h3 className="text-2xl md:text-3xl font-bold text-[#173926]">B12 Super Food</h3>
                 <p className="mt-4 text-[#5a685f] leading-relaxed">
                   Advanced herbal nutrition blend supporting stamina,
                   energy, immunity, and complete body wellness naturally.
                 </p>
-                <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="mt-8 flex flex-col md:flex-row items-center gap-4">
                   <span className="text-2xl md:text-3xl font-bold text-[#c3955d]">₹999</span>
                   
          <button
   onClick={() => {
+const email =
+  localStorage.getItem(
+    'customerEmail'
+  );
 
-    localStorage.setItem(
-  'checkoutCart',
-  JSON.stringify([
-    {
-      name: 'B12 Super Food',
-      price: 999,
-      quantity: 1,
-    }
-  ])
-);
+if (!email) {
 
-window.location.href = '/checkout';
+  localStorage.setItem(
+    'redirectAfterLogin',
+    '/checkout'
+  );
 
+  window.location.href =
+    '/account/login';
+
+  return;
+}
+
+window.location.href =
+  '/checkout';
   }}
 
   className="relative z-[999] px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
