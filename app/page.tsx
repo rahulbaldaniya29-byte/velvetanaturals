@@ -323,7 +323,7 @@ if (loading) {
           
 
           {/* RIGHT SIDE */}
-<div className="flex items-center gap-2 md:gap-4">
+<div className="flex items-center gap-3 md:gap-4">
               
 
 
@@ -344,7 +344,7 @@ if (loading) {
   onClick={() => {
     window.location.href = '/cart';
   }}
-  className="relative z-[999] px-3 md:px-5 py-2 text-xs md:text-base rounded-full bg-gradient-to-r from-[#173926] to-[#28543c] text-white shadow-lg hover:bg-[#28543c] transition-all duration-300"
+  className="relative z-[999] px-2 sm:px-3 md:px-5 py-2 text-xs md:text-base rounded-full bg-gradient-to-r from-[#173926] to-[#28543c] text-white shadow-lg hover:bg-[#28543c] transition-all duration-300"
 >
   🛒 Cart
 
@@ -369,7 +369,7 @@ if (loading) {
 
       setAccountMenu(!accountMenu);
     }}
-    className="px-4 md:px-5 py-2 rounded-full bg-gradient-to-r from-[#173926] to-[#28543c] text-white text-sm md:text-base shadow-lg"
+    className="px-3 md:px-5 py-2 rounded-full bg-gradient-to-r from-[#173926] to-[#28543c] text-white text-sm md:text-base shadow-lg"
   >
     {loggedIn ? 'Account' : 'Login'}
   </button>
@@ -410,7 +410,7 @@ if (loading) {
   )}
   <button
   onClick={() => setMenuOpen(!menuOpen)}
-  className="md:hidden text-white text-2xl"
+  className="md:hidden ml-1 text-white text-2xl"
 >
   ☰
 </button>
