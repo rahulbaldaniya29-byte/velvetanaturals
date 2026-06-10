@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import PageTransition from '@/components/PageTransition';
 
 export default function AccountLoginPage() {
 
@@ -120,10 +121,9 @@ setMessage('');
     }
 
   };
-
-  return (
-
-  <main className="min-h-screen bg-[#f7f5ef] flex items-center justify-center px-4">
+return (
+  <PageTransition>
+    <main className="min-h-screen bg-[#f7f5ef] flex items-center justify-center px-4">
 
     <div className="w-full max-w-md">
 
@@ -352,5 +352,6 @@ duration-300
 
   </main>
 
+  </PageTransition>
 );
 }

@@ -1,7 +1,9 @@
 'use client';
 import Image from 'next/image';
+import { Share2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+
 export default function HomePage() {
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -14,7 +16,7 @@ const [accountMenu, setAccountMenu] = useState(false);
 const [messageName, setMessageName] = useState('');
 const [messageEmail, setMessageEmail] = useState('');
 const [messageText, setMessageText] = useState('');
-
+const accountMenuRef = useRef<HTMLDivElement>(null);
 const [sending, setSending] = useState(false);
 const [successMessage, setSuccessMessage] = useState('');
 
@@ -22,7 +24,30 @@ const [heroOffset, setHeroOffset] = useState({
   x: 0,
   y: 0,
 });
+useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      accountMenuRef.current &&
+      !accountMenuRef.current.contains(
+        event.target as Node
+      )
+    ) {
+      setAccountMenu(false);
+    }
+  };
 
+  document.addEventListener(
+    'mousedown',
+    handleClickOutside
+  );
+
+  return () => {
+    document.removeEventListener(
+      'mousedown',
+      handleClickOutside
+    );
+  };
+}, []);
 useEffect(() => {
 
   const updateCart = () => {
@@ -253,11 +278,37 @@ if (loading) {
 </div>
           {/* DESKTOP MENU */}
           <nav className="hidden md:flex items-center gap-10 text-white">
-            <a href="#home" className="hover:text-[#d6b37a] transition-all duration-300">Home</a>
-            <a href="#products" className="hover:text-[#d6b37a] transition-all duration-300">Products</a>
-            <a href="#about" className="hover:text-[#d6b37a] transition-all duration-300">Why Velveta</a>
-            <a href="#contact" className="hover:text-[#d6b37a] transition-all duration-300">Contact</a>
+<a
+  href="#home"
+  onClick={() => setMenuOpen(false)}
+  className="hover:text-[#d6b37a] transition"
+>
+  Home
+</a>
 
+<a
+  href="#products"
+  onClick={() => setMenuOpen(false)}
+  className="hover:text-[#d6b37a] transition"
+>
+  Products
+</a>
+
+<a
+  href="#about"
+  onClick={() => setMenuOpen(false)}
+  className="hover:text-[#d6b37a] transition"
+>
+  Why Velveta
+</a>
+
+<a
+  href="#contact"
+  onClick={() => setMenuOpen(false)}
+  className="hover:text-[#d6b37a] transition"
+>
+  Contact
+</a>
           </nav>
           
           
@@ -301,7 +352,10 @@ if (loading) {
   )}
 
 </button>
-<div className="relative">
+<div
+  className="relative"
+  ref={accountMenuRef}
+>
 
   <button
     onClick={() => {
@@ -361,19 +415,37 @@ if (loading) {
         {menuOpen && (
           <div className="mobile-menu md:hidden px-6 pb-5">
             <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex flex-col gap-5 text-white">
-              <a href="#home" className="hover:text-[#d6b37a] transition">Home</a>
-              <a href="#products" className="hover:text-[#d6b37a] transition">Products</a>
-              <a href="#about" className="hover:text-[#d6b37a] transition">Why Velveta</a>
-              <a href="#contact" className="hover:text-[#d6b37a] transition">Contact</a>
-
-              <button
-  onClick={() => {
-    window.location.href = '/orders';
-  }}
-  className="text-left hover:text-[#d6b37a] transition"
+              <a
+  href="#home"
+  onClick={() => setMenuOpen(false)}
+  className="hover:text-[#d6b37a] transition"
 >
-  My Orders
-</button>
+  Home
+</a>
+
+<a
+  href="#products"
+  onClick={() => setMenuOpen(false)}
+  className="hover:text-[#d6b37a] transition"
+>
+  Products
+</a>
+
+<a
+  href="#about"
+  onClick={() => setMenuOpen(false)}
+  className="hover:text-[#d6b37a] transition"
+>
+  Why Velveta
+</a>
+
+<a
+  href="#contact"
+  onClick={() => setMenuOpen(false)}
+  className="hover:text-[#d6b37a] transition"
+>
+  Contact
+</a>
             </div>
           </div>
         )}
@@ -392,7 +464,7 @@ if (loading) {
         <div className="absolute bottom-[-120px] right-[-120px] w-[400px] h-[400px] bg-[#c3955d]/20 rounded-full blur-3xl animate-pulse"></div>
 
         {/* Content */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-14 items-center text-center md:text-left relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-14 items-center text-center md:text-left relative z-10">
 
           {/* LEFT */}
           <div>
@@ -408,18 +480,10 @@ if (loading) {
               science, and luxury wellness experience for modern lifestyles.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mt-10">
-              <button className="glow-button relative overflow-hidden px-8 py-4 rounded-full bg-[#c3955d] hover:bg-[#d9ab73] text-black font-semibold transition-all duration-300 hover:scale-105 shadow-2xl before:absolute before:top-0 before:left-[-100%] before:w-full before:h-full before:bg-white/30 before:skew-x-12 before:transition-all before:duration-700 hover:before:left-[200%]">
-                Shop Now
-              </button>
-              <button className="px-8 py-4 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white/10 transition-all duration-300">
-                Explore Products
-              </button>
-            </div>
           </div>
 
           {/* RIGHT IMAGE */}
-          <div className="relative flex justify-center">
+          <div className="relative flex justify-center order-first md:order-last">
             <div className="absolute w-[450px] h-[450px] rounded-full bg-[#ffffff10] blur-3xl"></div>
             <Image
   src={
@@ -430,7 +494,7 @@ if (loading) {
   alt='Velveta Product'
 width={320}
 height={320}
-              className="object-contain w-[260px] md:w-auto h-auto relative z-10 transition-all duration-700 drop-shadow-[0_20px_80px_rgba(0,0,0,0.6)] floating-animation animate-[float_5s_ease-in-out_infinite]"
+              className="object-contain w-[220px] sm:w-[260px] md:w-auto h-auto relative z-10 transition-all duration-700 drop-shadow-[0_20px_80px_rgba(0,0,0,0.6)] floating-animation animate-[float_5s_ease-in-out_infinite]"
               style={{
   transform: `translate(${heroOffset.x}px, ${heroOffset.y}px)`,
 }}
@@ -444,69 +508,75 @@ height={320}
       </section>
 
       {/* PRODUCTS */}
-      <section id="products" className="py-28 px-6 bg-[#fdfcf8] animate-[fadeUp_1s_ease-out]">
+      <section
+  id="products"
+  className="py-32 px-4 md:px-6 bg-gradient-to-b from-[#fdfcf8] to-[#f5f1e8]"
+>
 
         <div className="max-w-7xl mx-auto">
 
-          <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-bold text-[#173926]">Featured Products</h2>
-            <p className="mt-5 text-[#4d5c54] max-w-2xl mx-auto text-lg">
-              Discover our premium Ayurvedic wellness collection crafted
-              from the finest natural ingredients.
-            </p>
-          </div>
+          <div className="text-center mb-24">
+  <h2 className="text-4xl md:text-6xl font-black text-[#173926] tracking-tight">
+    Featured Products
+  </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+  <p className="mt-6 text-[#66756d] max-w-2xl mx-auto text-lg leading-relaxed">
+    Discover our premium Ayurvedic wellness collection crafted
+    from the finest natural ingredients.
+  </p>
+</div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
             {/* CARD 1 */}
-            <div className="group glass-card premium-card rounded-[35px] overflow-hidden shadow-xl border border-[#dfe7e1] hover:-translate-y-3 hover:rotate-1 hover:shadow-2xl transition-all duration-500 transform-gpu">
+            <div className="group overflow-hidden rounded-[40px] bg-white border border-[#e7ebe7] shadow-[0_15px_40px_rgba(0,0,0,0.08)] hover:-translate-y-3 hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] transition-all duration-500">
 
-              <div className="h-[380px] bg-gradient-to-br from-[#2f5d43] to-[#173926] flex items-center justify-center relative overflow-hidden">
+              <div className="h-[320px] md:h-[420px] bg-gradient-to-br from-[#173926] via-[#214a33] to-[#2f5d43] flex items-center justify-center relative overflow-hidden">
                 <div className="absolute w-[350px] h-[350px] bg-white/10 rounded-full blur-3xl"></div>
                 <Image
                   src="/product1.jpeg"
                   alt="Arogya Churn"
-                  width={270}
-                  height={270}
-                  className="object-contain w-auto h-auto group-hover:scale-125 group-hover:rotate-2 transition-all duration-700 drop-shadow-2xl"
+                  width={320}
+height={320}
+                  className="object-cover w-auto h-auto group-hover:scale-110 transition-all duration-700 drop-shadow-[0_20px_50px_rgba(0,0,0,0.35)]"
                 />
               </div>
 
-              <div className="p-5 md:p-8 text-center md:text-left">
-                <h3 className="text-2xl md:text-3xl font-bold text-[#173926]">Arogya Churn</h3>
-                <p className="mt-4 text-[#5a685f] leading-relaxed">
+              <div className="p-8 md:p-10 flex flex-col h-full text-center md:text-left">
+                <h3 className="text-3xl md:text-4xl font-black text-[#173926]">Arogya Churn</h3>
+                <p className="mt-5 text-[#5a685f] leading-relaxed text-[15px] md:text-base">
                   Herbal Ayurvedic formula designed to improve digestion,
                   immunity, detoxification, and natural daily energy.
                 </p>
-                <div className="mt-8 flex flex-col md:flex-row items-center gap-4">
-                  <span className="text-2xl md:text-3xl font-bold text-[#c3955d]">₹799</span>
+                <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                  <span className="text-4xl font-black text-[#173926]">₹799</span>
                   
          <button
-  onClick={() => {
-const email =
-  localStorage.getItem(
-    'customerEmail'
-  );
+onClick={() => {
+  const email = localStorage.getItem('customerEmail');
 
-if (!email) {
+  if (!email) {
+    localStorage.setItem('redirectAfterLogin', '/checkout');
+    window.location.href = '/account/login';
+    return;
+  }
 
   localStorage.setItem(
-    'redirectAfterLogin',
-    '/checkout'
+    'checkoutCart',
+    JSON.stringify([
+      {
+        id: 'cart1',
+        name: 'Arogya Churn',
+        price: 799,
+        quantity: 1,
+      },
+    ])
   );
 
-  window.location.href =
-    '/account/login';
-
-  return;
-}
-
-window.location.href =
-  '/checkout';
+  window.location.href = '/checkout';
 }}
 
-  className="relative z-[999]  mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
->
+className="flex-1 py-4 rounded-2xl bg-[#173926] hover:bg-[#28543c] text-white font-semibold transition-all duration-300 shadow-lg">
   Buy Now
 </button>
 <button
@@ -515,9 +585,9 @@ window.location.href =
     const existingCart =
       JSON.parse(localStorage.getItem('cart') || '[]');
 
-    const existingProductIndex =
+const existingProductIndex =
   existingCart.findIndex(
-    (item: any) => item.name === 'Arogya Churn'
+    (item: any) => item.id === 'cart1'
   );
 
 if (existingProductIndex !== -1) {
@@ -526,11 +596,12 @@ if (existingProductIndex !== -1) {
 
 } else {
 
-  existingCart.push({
-    name: 'Arogya Churn',
-    price: 799,
-    quantity: 1,
-  });
+existingCart.push({
+  id: 'cart1',
+  name: 'Arogya Churn',
+  price: 799,
+  quantity: 1,
+});
 
 }
 
@@ -554,10 +625,28 @@ setCartCount(totalItems);
 
 
   }}
-
-  className="relative z-[999]  mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
->
+className="flex-1 py-4 rounded-2xl bg-[#c3955d] hover:bg-[#d1a167] text-black font-semibold transition-all duration-300 shadow-lg">
   Add To Cart
+</button>
+<button
+  onClick={() => {
+    const shareUrl = window.location.origin;
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Arogya Churn',
+        text: 'Check out Arogya Churn on Velveta Naturals',
+        url: shareUrl,
+      });
+    } else {
+      navigator.clipboard.writeText(shareUrl);
+
+      alert('Product link copied ✓');
+    }
+  }}
+className="w-full sm:w-auto px-5 py-4 rounded-2xl border border-[#173926] text-[#173926] hover:bg-[#173926] hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
+  <Share2 size={18} />
+  Share
 </button>
 
                 </div>
@@ -566,54 +655,52 @@ setCartCount(totalItems);
             </div>
 
             {/* CARD 2 */}
-            <div className="group glass-card premium-card rounded-[35px] overflow-hidden shadow-xl border border-[#dfe7e1] hover:-translate-y-3 hover:rotate-1 hover:shadow-2xl transition-all duration-500 transform-gpu">
+            <div className="group overflow-hidden rounded-[40px] bg-white border border-[#e7ebe7] shadow-[0_15px_40px_rgba(0,0,0,0.08)] hover:-translate-y-3 hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] transition-all duration-500">
 
-              <div className="h-[380px] bg-gradient-to-br from-[#66552d] to-[#2d2412] flex items-center justify-center relative overflow-hidden">
+              <div className="h-[320px] md:h-[420px] bg-gradient-to-br from-[#6f5830] via-[#4c3d20] to-[#2d2412] flex items-center justify-center relative overflow-hidden">
                 <div className="absolute w-[350px] h-[350px] bg-white/10 rounded-full blur-3xl"></div>
                 <Image
                   src="/product2.jpeg"
                   alt="B12 Super Food"
-                  width={270}
-                  height={270}
-                  className="object-contain w-auto h-auto group-hover:scale-125 group-hover:rotate-2 transition-all duration-700 drop-shadow-2xl"
-                />
+width={320}
+height={320}
+                className="object-contain w-auto h-auto group-hover:scale-110 transition-all duration-700 drop-shadow-[0_20px_50px_rgba(0,0,0,0.35)]"/>
               </div>
 
-              <div className="p-5 md:p-8 text-center md:text-left">
-                <h3 className="text-2xl md:text-3xl font-bold text-[#173926]">B12 Super Food</h3>
-                <p className="mt-4 text-[#5a685f] leading-relaxed">
+              <div className="p-8 md:p-10 flex flex-col h-full text-center md:text-left">
+                <h3 className="text-3xl md:text-4xl font-black text-[#173926]">B12 Super Food</h3>
+                <p className="mt-5 text-[#5a685f] leading-relaxed text-[15px] md:text-base">
                   Advanced herbal nutrition blend supporting stamina,
                   energy, immunity, and complete body wellness naturally.
                 </p>
-                <div className="mt-8 flex flex-col md:flex-row items-center gap-4">
-                  <span className="text-2xl md:text-3xl font-bold text-[#c3955d]">₹999</span>
+                <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                  <span className="text-4xl font-black text-[#173926]">₹999</span>
                   
          <button
   onClick={() => {
-const email =
-  localStorage.getItem(
-    'customerEmail'
-  );
+  const email = localStorage.getItem('customerEmail');
 
-if (!email) {
+  if (!email) {
+    localStorage.setItem('redirectAfterLogin', '/checkout');
+    window.location.href = '/account/login';
+    return;
+  }
 
   localStorage.setItem(
-    'redirectAfterLogin',
-    '/checkout'
+    'checkoutCart',
+    JSON.stringify([
+      {
+        id: 'cart2',
+        name: 'B12 Super Food',
+        price: 999,
+        quantity: 1,
+      },
+    ])
   );
 
-  window.location.href =
-    '/account/login';
-
-  return;
-}
-
-window.location.href =
-  '/checkout';
-  }}
-
-  className="relative z-[999] px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
->
+  window.location.href = '/checkout';
+}}
+className="flex-1 py-4 rounded-2xl bg-[#173926] hover:bg-[#28543c] text-white font-semibold transition-all duration-300 shadow-lg">
   Buy Now
 </button>
 
@@ -625,7 +712,7 @@ window.location.href =
 
     const existingProductIndex =
   existingCart.findIndex(
-    (item: any) => item.name === 'B12 Super Food'
+    (item: any) => item.id === 'cart2'
   );
 
 if (existingProductIndex !== -1) {
@@ -634,12 +721,12 @@ if (existingProductIndex !== -1) {
 
 } else {
 
-  existingCart.push({
-    name: 'B12 Super Food',
-    price: 999,
-    quantity: 1,
-  });
-
+existingCart.push({
+  id: 'cart2',
+  name: 'B12 Super Food',
+  price: 999,
+  quantity: 1,
+});
 }
 
 localStorage.setItem(
@@ -660,9 +747,28 @@ setCartCount(totalItems);
 
   }}
 
-  className="relative z-[999]  mt-4 px-6 py-3 rounded-full bg-[#2f5d43] hover:bg-[#3c7353] hover:scale-105 hover:-translate-y-1 text-white transition-all duration-300 shadow-lg hover:shadow-2xl"
->
+className="flex-1 py-4 rounded-2xl bg-[#c3955d] hover:bg-[#d1a167] text-black font-semibold transition-all duration-300 shadow-lg">
   Add To Cart
+</button>
+<button
+  onClick={() => {
+    const shareUrl = window.location.origin;
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'B12 Super Food',
+        text: 'Check out B12 Super Food on Velveta Naturals',
+        url: shareUrl,
+      });
+    } else {
+      navigator.clipboard.writeText(shareUrl);
+
+      alert('Product link copied ✓');
+    }
+  }}
+  className="w-full sm:w-auto px-5 py-4 rounded-2xl border border-[#173926] text-[#173926] hover:bg-[#173926] hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
+  <Share2 size={18} />
+  Share
 </button>
                 </div>
               </div>
@@ -677,42 +783,47 @@ setCartCount(totalItems);
 
       
       {/* WHY CHOOSE US */}
-      <section id="about" className="py-28 px-6 bg-[#f7f5ef] animate-[fadeUp_1s_ease-out]">
+      <section
+  id="about"
+  className="py-20 md:py-32 px-4 md:px-6 bg-[#f7f5ef]"
+>
 
         <div className="max-w-7xl mx-auto">
 
-          <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-bold text-[#173926]">Why Choose Velveta</h2>
-            <p className="mt-5 text-[#5a685f] max-w-3xl mx-auto text-lg">
-              Combining ancient Ayurvedic wisdom with modern wellness science
-              to deliver premium natural healing experiences.
-            </p>
-          </div>
+          <div className="text-center mb-24">
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+  <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-[#173926] tracking-tight">
+    Why Choose Velveta
+  </h2>
 
-            <div className="bg-white rounded-[30px] p-6 md:p-10 shadow-xl border border-[#e5ebe7] hover:-translate-y-2 transition-all duration-500">
-              <div className="w-20 h-20 rounded-full bg-[#e4efe7] flex items-center justify-center text-4xl mb-8">🌿</div>
-              <h3 className="text-2xl font-bold text-[#173926]">100% Natural</h3>
-              <p className="mt-5 text-[#5a685f] leading-relaxed">
+  <p className="mt-6 text-[#66756d] max-w-3xl mx-auto text-lg leading-relaxed">
+    Combining ancient Ayurvedic wisdom with modern wellness science
+    to deliver premium natural healing experiences.
+  </p>
+
+</div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div className="group bg-white rounded-[30px] md:rounded-[40px] p-6 md:p-10 border border-[#e7ebe7] shadow-[0_15px_40px_rgba(0,0,0,0.08)] hover:-translate-y-3 hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] transition-all duration-500">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-[#edf5ef] flex items-center justify-center text-4xl mb-8 group-hover:scale-110 transition-all duration-300">🌿</div>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#173926]">100% Natural</h3>
+              <p className="mt-5 text-[#66756d] leading-relaxed text-[15px] md:text-base">
                 Pure herbal ingredients carefully selected from trusted
                 Ayurvedic sources without harmful chemicals.
               </p>
             </div>
-
-            <div className="bg-white rounded-[30px] p-6 md:p-10 shadow-xl border border-[#e5ebe7] hover:-translate-y-2 transition-all duration-500">
-              <div className="w-20 h-20 rounded-full bg-[#f1e7d7] flex items-center justify-center text-4xl mb-8">✨</div>
-              <h3 className="text-2xl font-bold text-[#173926]">Luxury Wellness</h3>
-              <p className="mt-5 text-[#5a685f] leading-relaxed">
+<div className="group bg-white rounded-[30px] md:rounded-[40px] p-6 md:p-10 border border-[#e7ebe7] shadow-[0_15px_40px_rgba(0,0,0,0.08)] hover:-translate-y-3 hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] transition-all duration-500">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-[#f8efe0] flex items-center justify-center text-4xl mb-8 group-hover:scale-110 transition-all duration-300">✨</div>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#173926]">Luxury Wellness</h3>
+              <p className="mt-5 text-[#66756d] leading-relaxed text-[15px] md:text-base">
                 Premium quality wellness products designed for modern healthy
                 lifestyle and complete body balance.
               </p>
             </div>
-
-            <div className="bg-white rounded-[30px] p-6 md:p-10 shadow-xl border border-[#e5ebe7] hover:-translate-y-2 transition-all duration-500">
-              <div className="w-20 h-20 rounded-full bg-[#e4efe7] flex items-center justify-center text-4xl mb-8">🛡️</div>
-              <h3 className="text-2xl font-bold text-[#173926]">Trusted Formula</h3>
-              <p className="mt-5 text-[#5a685f] leading-relaxed">
+<div className="group bg-white rounded-[30px] md:rounded-[40px] p-6 md:p-10 border border-[#e7ebe7] shadow-[0_15px_40px_rgba(0,0,0,0.08)] hover:-translate-y-3 hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] transition-all duration-500">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-[#edf5ef] flex items-center justify-center text-4xl mb-8 group-hover:scale-110 transition-all duration-300">🛡️</div>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#173926]">Trusted Formula</h3>
+              <p className="mt-5 text-[#66756d] leading-relaxed text-[15px] md:text-base">
                 Scientifically crafted Ayurvedic blends focused on immunity,
                 energy, digestion, and overall wellness.
               </p>
@@ -722,54 +833,56 @@ setCartCount(totalItems);
         </div>
       </section>
       {/* CONTACT SECTION */}
-      <section id="contact" className="py-28 px-6 bg-[#173926] text-white relative overflow-hidden animate-[fadeUp_1s_ease-out]">
-
+<section
+  id="contact"
+  className="py-20 md:py-32 px-4 md:px-6 bg-gradient-to-br from-[#173926] via-[#1d4933] to-[#10251a] text-white relative overflow-hidden"
+>
         <div className="absolute top-[-100px] left-[-100px] w-[300px] h-[300px] bg-[#c3955d]/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-[-120px] right-[-120px] w-[350px] h-[350px] bg-[#4fa46d]/20 rounded-full blur-3xl"></div>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
 
           {/* LEFT */}
           <div>
-            <span className="hidden md:block px-5 py-2 rounded-full bg-white/10 border border-white/10 text-white/70 text-sm tracking-[3px] uppercase backdrop-blur-md">
+            <span className="inline-flex px-4 py-2 rounded-full bg-white/10 border border-white/10 text-white/70 text-xs md:text-sm tracking-[2px] uppercase backdrop-blur-md">
               Contact Us
             </span>
-            <h2 className="mt-8 text-3xl md:text-6xl font-black leading-tight">
+            <h2 className="mt-6 text-3xl sm:text-4xl md:text-6xl font-black leading-tight">
               Let's Build <br />
               Healthy Living Together
             </h2>
-            <p className="mt-8 text-white/70 text-lg leading-relaxed max-w-xl">
+            <p className="mt-6 text-white/70 text-base md:text-lg leading-relaxed max-w-xl">
               Connect with Velveta Naturals for wellness guidance,
               premium Ayurvedic products, partnerships, and support.
             </p>
             <div className="mt-10 space-y-5">
               <div>
                 <p className="text-white/40 uppercase text-sm tracking-[3px]">Email</p>
-                <h4 className="text-2xl font-semibold mt-2">support@velveta.com</h4>
+                <h4 className="text-lg md:text-2xl font-semibold mt-2 break-all">support@velveta.com</h4>
               </div>
               <div>
                 <p className="text-white/40 uppercase text-sm tracking-[3px]">Phone</p>
-                <h4 className="text-2xl font-semibold mt-2">+91 99999 99999</h4>
+                <h4 className="text-lg md:text-2xl font-semibold mt-2 break-all">+91 99999 99999</h4>
               </div>
             </div>
           </div>
 
           {/* RIGHT FORM */}
-          <div className="bg-white/10 backdrop-blur-2xl border border-white/10 rounded-[40px] p-5 md:p-10">
+          <div className="bg-white/10 backdrop-blur-2xl border border-white/10 rounded-[30px] md:rounded-[40px] p-5 md:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
             <div className="space-y-5">
               <input
   type="text"
   placeholder="Your Name"
   value={messageName}
   onChange={(e) => setMessageName(e.target.value)}
-  className="w-full px-6 py-5 rounded-2xl bg-white/10 border border-white/10 outline-none placeholder:text-white/40"
+  className="w-full px-5 md:px-6 py-4 md:py-5 rounded-2xl bg-white/10 border border-white/10 outline-none placeholder:text-white/40 focus:border-[#c3955d] transition-all"
 />
               <input
   type="email"
   placeholder="Your Email"
   value={messageEmail}
   onChange={(e) => setMessageEmail(e.target.value)}
-  className="w-full px-6 py-5 rounded-2xl bg-white/10 border border-white/10 outline-none placeholder:text-white/40"
+  className="w-full px-5 md:px-6 py-4 md:py-5 rounded-2xl bg-white/10 border border-white/10 outline-none placeholder:text-white/40 focus:border-[#c3955d] transition-all"
 />
 {messageEmail && !isValidEmail && (
   <p className="text-red-300 text-sm mt-2">
@@ -781,8 +894,7 @@ setCartCount(totalItems);
   rows={5}
   value={messageText}
   onChange={(e) => setMessageText(e.target.value)}
-  className="w-full px-6 py-5 rounded-2xl bg-white/10 border border-white/10 outline-none placeholder:text-white/40 resize-none"
-></textarea>
+className="w-full px-5 md:px-6 py-4 md:py-5 rounded-2xl bg-white/10 border border-white/10 outline-none placeholder:text-white/40 resize-none focus:border-[#c3955d] transition-all"></textarea>
            <button
   onClick={async () => {
 
@@ -824,36 +936,35 @@ setSuccessMessage(
 
 
 }}
-  className="w-full py-5 rounded-2xl bg-[#c3955d] hover:bg-[#ddb57f] text-black font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-95"
->
+className="w-full py-4 md:py-5 rounded-2xl bg-[#c3955d] hover:bg-[#ddb57f] text-black font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg">
   {sending ? 'Sending...' : 'Send Message'}
 </button>
 {successMessage && successMessage !== 'sent' && (
-  <p className="text-red-300 text-sm mt-2">
-    {successMessage}
-  </p>
+  <p className="text-green-300 text-sm mt-2">
+  {successMessage}
+</p>
 )}
             </div>
           </div>
 
         </div>
+
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#10251a] text-white pt-24 pb-10 px-6">
-
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-14">
+<footer className="bg-gradient-to-b from-[#10251a] to-[#08150f] text-white pt-20 md:pt-24 pb-10 px-4 md:px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-14">
 
           {/* BRAND */}
           <div>
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-[#c3955d] flex items-center justify-center text-black font-bold text-xl">V</div>
+            <div className="flex items-center gap-4 justify-center sm:justify-start">
+              <div className="w-14 h-14 rounded-2xl bg-[#c3955d] flex items-center justify-center text-black font-black text-xl shadow-lg">V</div>
               <div>
                 <h2 className="text-2xl font-bold">Velveta</h2>
                 <p className="text-white/50 text-xs tracking-[3px] uppercase">Naturals</p>
               </div>
             </div>
-            <p className="mt-6 text-white/60 leading-relaxed">
+            <p className="mt-6 text-white/60 leading-relaxed text-sm md:text-base text-center sm:text-left">
               Premium Ayurvedic wellness products crafted
               with natural ingredients for modern healthy lifestyles.
             </p>
@@ -861,12 +972,12 @@ setSuccessMessage(
 
           {/* LINKS */}
           <div>
-            <h3 className="text-xl font-semibold mb-5">Quick Links</h3>
-            <div className="flex flex-col gap-3 text-white/60">
-              <a href="#home" className="hover:text-white transition">Home</a>
-              <a href="#products" className="hover:text-white transition">Products</a>
-              <a href="#about" className="hover:text-white transition">Why Velveta</a>
-              <a href="#contact" className="hover:text-white transition">Contact</a>
+            <h3 className="text-xl font-bold mb-5 text-[#c3955d]">Quick Links</h3>
+            <div className="flex flex-col gap-3 text-white/60 text-sm md:text-base">
+              <a href="#home" className="hover:text-[#c3955d] transition-all duration-300">Home</a>
+              <a href="#products" className="hover:text-[#c3955d] transition-all duration-300">Products</a>
+              <a href="#about" className="hover:text-[#c3955d] transition-all duration-300">Why Velveta</a>
+              <a href="#contact" className="hover:text-[#c3955d] transition-all duration-300">Contact</a>
             </div>
           </div>
 
@@ -874,14 +985,19 @@ setSuccessMessage(
           <div>
             <h3 className="text-xl font-semibold mb-5">Products</h3>
             <div className="flex flex-col gap-3 text-white/60">
-              <a href="#" className="hover:text-white transition">Arogya Churn</a>
-              <a href="#" className="hover:text-white transition">B12 Super Food</a>
+              <a href="#products" className="hover:text-white transition">
+  Arogya Churn
+</a>
+
+<a href="#products" className="hover:text-white transition">
+  B12 Super Food
+</a>
             </div>
           </div>
 
 </div>
         {/* BOTTOM */}
-        <div className="border-t border-white/10 mt-16 pt-8 text-center text-white/40 text-sm">
+        <div className="border-t border-white/10 mt-14 pt-8 text-center text-white/40 text-xs md:text-sm">
           © 2026 Velveta Naturals. All Rights Reserved.
         </div>
 

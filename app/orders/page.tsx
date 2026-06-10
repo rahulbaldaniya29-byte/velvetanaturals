@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Script from 'next/script';
-
+import PageTransition from '@/components/PageTransition';
 import jsPDF from 'jspdf';
 import { useRouter } from 'next/navigation';
 
@@ -243,9 +243,8 @@ useEffect(() => {
   }
 
 }, [orders]);
-
 return (
-  <>
+  <PageTransition>
     <Script
       src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
       strategy="afterInteractive"
@@ -582,7 +581,7 @@ return (
 
     </main>
 
-  </>
+    </PageTransition>
 );
 
 }

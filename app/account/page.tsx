@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-
+import PageTransition from '@/components/PageTransition';
 export default function AccountPage() {
 
   const [customer, setCustomer] =
@@ -129,7 +129,8 @@ setTimeout(() => {
 };
   if (!customer) {
     return (
-      <main className="min-h-screen bg-[#f7f5ef] py-10 px-4">
+  <PageTransition>
+    <main className="min-h-screen bg-[#f7f5ef] py-10 px-4">
         
 
         <div className="max-w-6xl mx-auto">
@@ -140,12 +141,14 @@ setTimeout(() => {
           </div>
         </div>
       </main>
+    </PageTransition>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f5ef] py-10 px-4">
-      {success && (
+    <PageTransition>
+      <main className="min-h-screen bg-[#f7f5ef] py-10 px-4">
+        {success && (
   <div
     className="
       fixed
@@ -535,8 +538,7 @@ setTimeout(() => {
         
 
       </div>
-    </main>
-
-
-  );
+        </main>
+  </PageTransition>
+);
 }
