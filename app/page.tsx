@@ -408,14 +408,15 @@ if (loading) {
     </div>
     
   )}
-
-</div>
-<button
+  <button
   onClick={() => setMenuOpen(!menuOpen)}
   className="md:hidden text-white text-2xl"
 >
-  {menuOpen ? '✕' : '☰'}
+  ☰
 </button>
+
+</div>
+
           </div>
 
         </div>
