@@ -404,18 +404,18 @@ if (loading) {
   <span className="text-lg">🚪</span>
   <span>Logout</span>
 </button>
+
+    </div>
+    
+  )}
+
+</div>
 <button
   onClick={() => setMenuOpen(!menuOpen)}
   className="md:hidden text-white text-2xl"
 >
   {menuOpen ? '✕' : '☰'}
 </button>
-    </div>
-    
-  )}
-
-</div>
-
           </div>
 
         </div>
