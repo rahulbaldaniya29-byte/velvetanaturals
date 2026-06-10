@@ -275,17 +275,7 @@ if (loading) {
       {/* NAVBAR */}
 <header className="fixed top-0 left-0 w-full z-[9999] bg-[#173926]/95 border-b border-white/10 shadow-lg">
 <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
-          {/* LOGO */}
-<div className="flex items-center">
-  <Image
-    src="/logo.png"
-    alt="Velveta Naturals"
-    width={110}
-    height={38}
-    priority
-    className="h-9 w-auto object-contain drop-shadow-md"
-  />
-</div>
+
           {/* DESKTOP MENU */}
           <nav className="hidden md:flex items-center gap-10 text-white">
 <a
@@ -321,17 +311,31 @@ if (loading) {
 </a>
           </nav>
           
-          
+          <div className="flex items-center gap-3">
+
+  <button
+    onClick={() => setMenuOpen(!menuOpen)}
+    className="md:hidden text-white text-2xl"
+  >
+    {menuOpen ? '✕' : '☰'}
+  </button>
+
+  <div className="flex items-center">
+    <Image
+      src="/logo.png"
+      alt="Velveta Naturals"
+      width={110}
+      height={38}
+      priority
+      className="h-9 w-auto object-contain drop-shadow-md"
+    />
+  </div>
+
+</div>
 
           {/* RIGHT SIDE */}
 <div className="flex items-center gap-2 md:gap-4">
-              {/* MOBILE MENU BUTTON */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden text-white text-2xl md:text-3xl"
-            >
-              {menuOpen ? '✕' : '☰'}
-            </button>
+              
 
 
             <button onClick={() => {
