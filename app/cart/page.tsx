@@ -62,31 +62,39 @@ const finalTotal = total + deliveryCharge;
 
   return (
 
-    <main className="min-h-screen bg-[#fdfcf8] p-5 md:p-10">
-
-      <h1 className="text-3xl md:text-5xl font-black text-[#173926] mb-10">
+    <main className="min-h-screen bg-gradient-to-b from-[#fdfcf8] via-[#f8f4ec] to-[#f3eee3] p-4 md:p-10">
+<h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-[#173926] mb-8 md:mb-12 tracking-tight text-center md:text-left">
         Your Cart
       </h1>
 
       <div className="grid gap-6">
+{cart.length === 0 && (
+  <div className="bg-white rounded-[30px] p-8 text-center border border-[#e7ebe7] shadow-lg">
+    <h2 className="text-2xl font-black text-[#173926]">
+      Your Cart Is Empty
+    </h2>
 
+    <p className="mt-3 text-[#66756d]">
+      Add some products to continue shopping.
+    </p>
+  </div>
+)}
         {cart.map((item, index) => (
 
           <div
             key={index}
-            className="bg-white rounded-[30px] p-5 md:p-8 shadow-xl border border-[#e5ebe7]"
+            className="bg-white rounded-[30px] md:rounded-[40px] p-5 md:p-10 border border-[#e7ebe7] shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:-translate-y-2 hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)] transition-all duration-500"
           >
 
-            <h2 className="text-2xl font-bold text-[#173926]">
+            <h2 className="text-2xl md:text-3xl font-black text-[#173926]">
               {item.name}
             </h2>
 
-            <p className="mt-3 text-[#5a685f] text-lg">
+            <p className="mt-4 text-[#c3955d] text-2xl font-black">
   ₹{item.price * (item.quantity || 1)}  
 </p>
 
-<div className="mt-5 flex flex-wrap items-center gap-3">
-
+<div className="mt-5 flex flex-wrap items-center gap-2 md:gap-3">
   <button
     onClick={() => {
 
@@ -113,12 +121,11 @@ if (updatedCart[index].quantity <= 0) {
 
     }}
 
-    className="w-10 h-10 rounded-full bg-[#173926] text-white text-xl"
+    className="w-12 h-12 rounded-2xl bg-[#173926] hover:bg-[#28543c] text-white text-xl transition-all duration-300"
   >
     -
   </button>
-
-  <span className="text-2xl font-bold text-[#173926]">
+<span className="min-w-[40px] text-center text-2xl md:text-3xl font-black text-[#173926]">
     {item.quantity || 1}
   </span>
 
@@ -142,7 +149,7 @@ updatedCart[index].quantity =
 
     }}
 
-    className="w-10 h-10 rounded-full bg-[#173926] text-white text-xl"
+    className="w-12 h-12 rounded-2xl bg-[#173926] hover:bg-[#28543c] text-white text-xl transition-all duration-300"
   >
     +
   </button>
@@ -165,7 +172,7 @@ updatedCart[index].quantity =
 
     }}
 
-    className="ml-5 px-5 py-3 rounded-full bg-red-500 hover:bg-red-600 text-white transition-all duration-300"
+    className="ml-2 md:ml-5 px-6 py-3 rounded-2xl bg-red-500 hover:bg-red-600 text-white font-semibold transition-all duration-300"
   >
     Remove
   </button>
@@ -179,15 +186,15 @@ updatedCart[index].quantity =
 
       <div className="mt-10">
 
-        <div className="bg-white rounded-[30px] p-5 md:p-8 shadow-xl border border-[#e5ebe7] max-w-xl ml-auto">
+        <div className="bg-white rounded-[30px] md:rounded-[40px] p-5 md:p-10 border border-[#e7ebe7] shadow-[0_20px_60px_rgba(0,0,0,0.08)] max-w-xl ml-auto">
 
   <div className="flex items-center justify-between border-b border-[#e5ebe7] pb-5">
 
-    <p className="text-2xl font-semibold text-[#173926]">
+    <p className="text-lg md:text-2xl font-semibold text-[#173926]">
       Subtotal
     </p>
 
-    <p className="text-2xl font-bold text-[#173926]">
+    <p className="text-3xl font-black text-[#173926]">
       ₹{total}
     </p>
 
@@ -195,11 +202,11 @@ updatedCart[index].quantity =
 
   <div className="flex items-center justify-between py-5 border-b border-[#e5ebe7]">
 
-    <p className="text-2xl font-semibold text-[#173926]">
+    <p className="text-lg md:text-2xlfont-semibold text-[#173926]">
       Delivery Charges
     </p>
 
-    <p className="text-2xl font-bold text-[#c3955d]">
+    <p className="text-lg md:text-2xl font-bold text-[#c3955d]">
       ₹{deliveryCharge}
     </p>
 
@@ -248,8 +255,7 @@ updatedCart[index].quantity =
 
 }}
 
-    className="px-6 md:px-10 py-4 md:py-5 rounded-full bg-[#173926] hover:bg-[#28543c] text-white text-lg font-semibold transition-all duration-300 shadow-xl hover:scale-105"
-  >
+  className="w-full md:w-auto px-6 md:px-12 py-4 md:py-5 rounded-2xl bg-gradient-to-r from-[#173926] to-[#28543c] hover:scale-105 text-white text-lg font-bold transition-all duration-300 shadow-[0_15px_40px_rgba(23,57,38,0.35)]">
     Proceed To Checkout
   </button>
 

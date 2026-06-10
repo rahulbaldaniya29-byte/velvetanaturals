@@ -98,20 +98,14 @@ useEffect(() => {
 
   const updateCart = () => {
 
-    const cart =
-      JSON.parse(
-        localStorage.getItem('cart') || '[]'
-      );
-
-    const totalItems = cart.reduce(
-      (acc: number, item: any) =>
-        acc + (item.quantity || 1),
-      0
+  const cart =
+    JSON.parse(
+      localStorage.getItem('cart') || '[]'
     );
 
-    setCartCount(totalItems);
+  setCartCount(cart.length);
 
-  };
+};
 
   updateCart();
 
@@ -663,14 +657,7 @@ window.dispatchEvent(
 );
 
 
-const totalItems = existingCart.reduce(
-  (acc: number, item: any) =>
-    acc + (item.quantity || 1),
-  0
-);
-
-setCartCount(totalItems);
-
+setCartCount(existingCart.length);
 
 
   }}
@@ -785,13 +772,7 @@ localStorage.setItem(
 window.dispatchEvent(
   new Event('cartUpdated')
 );
-const totalItems = existingCart.reduce(
-  (acc: number, item: any) =>
-    acc + (item.quantity || 1),
-  0
-);
-
-setCartCount(totalItems);
+setCartCount(existingCart.length);
 
 
   }}
