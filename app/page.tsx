@@ -423,8 +423,8 @@ if (loading) {
 
         {/* MOBILE MENU */}
         {menuOpen && (
-          <div className="mobile-menu md:hidden px-6 pb-5">
-            <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex flex-col gap-5 text-white">
+          <div className="mobile-menu md:hidden absolute top-full left-0 w-full px-4 pb-4 z-[9999]">
+            <div className="bg-[#173926] border border-white/10 rounded-2xl p-4 flex flex-col gap-4 text-white shadow-xl">
               <a
   href="#home"
   onClick={() => setMenuOpen(false)}
