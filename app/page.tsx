@@ -275,17 +275,7 @@ if (loading) {
       {/* NAVBAR */}
 <header className="fixed top-0 left-0 w-full z-[9999] bg-[#173926]/95 border-b border-white/10 shadow-lg">
 <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-
-  {/* MOBILE MENU BUTTON */}
-  <button
-    onClick={() => setMenuOpen(!menuOpen)}
-    className="md:hidden text-white text-2xl"
-  >
-    {menuOpen ? '✕' : '☰'}
-  </button>
-
-  {/* LOGO */}
+       <div className="flex items-center">
   <Image
     src="/logo.png"
     alt="Velveta Naturals"
@@ -294,7 +284,6 @@ if (loading) {
     priority
     className="h-9 w-auto object-contain drop-shadow-md"
   />
-
 </div>
           {/* DESKTOP MENU */}
           <nav className="hidden md:flex items-center gap-10 text-white">
@@ -415,8 +404,14 @@ if (loading) {
   <span className="text-lg">🚪</span>
   <span>Logout</span>
 </button>
-
+<button
+  onClick={() => setMenuOpen(!menuOpen)}
+  className="md:hidden text-white text-2xl"
+>
+  {menuOpen ? '✕' : '☰'}
+</button>
     </div>
+    
   )}
 
 </div>
