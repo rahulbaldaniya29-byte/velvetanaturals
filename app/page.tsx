@@ -422,44 +422,45 @@ if (loading) {
         </div>
 
         {/* MOBILE MENU */}
-        {menuOpen && (
-          <div className="mobile-menu md:hidden absolute top-full left-0 w-full px-4 pb-4 z-[9999]">
-            <div className="bg-[#173926] border border-white/10 rounded-2xl p-4 flex flex-col gap-4 text-white shadow-xl">
-              <a
-  href="#home"
-  onClick={() => setMenuOpen(false)}
-  className="hover:text-[#d6b37a] transition"
->
-  Home
-</a>
+{menuOpen && (
+  <div className="mobile-menu md:hidden absolute top-full left-0 w-full px-4 pb-4 z-[9999]">
+    <div className="bg-white rounded-[28px] shadow-2xl border border-[#e5ebe7] overflow-hidden">
 
-<a
-  href="#products"
-  onClick={() => setMenuOpen(false)}
-  className="hover:text-[#d6b37a] transition"
->
-  Products
-</a>
+      <a
+        href="#home"
+        onClick={() => setMenuOpen(false)}
+        className="block px-6 py-4 text-[#173926] font-medium hover:bg-[#f7f5ef] transition-all duration-300"
+      >
+        Home
+      </a>
 
-<a
-  href="#about"
-  onClick={() => setMenuOpen(false)}
-  className="hover:text-[#d6b37a] transition"
->
-  Why Velveta
-</a>
+      <a
+        href="#products"
+        onClick={() => setMenuOpen(false)}
+        className="block px-6 py-4 text-[#173926] font-medium border-t border-[#edf1ee] hover:bg-[#f7f5ef] transition-all duration-300"
+      >
+        Products
+      </a>
 
-<a
-  href="#contact"
-  onClick={() => setMenuOpen(false)}
-  className="hover:text-[#d6b37a] transition"
->
-  Contact
-</a>
-            </div>
-          </div>
-        )}
+      <a
+        href="#about"
+        onClick={() => setMenuOpen(false)}
+        className="block px-6 py-4 text-[#173926] font-medium border-t border-[#edf1ee] hover:bg-[#f7f5ef] transition-all duration-300"
+      >
+        Why Velveta
+      </a>
 
+      <a
+        href="#contact"
+        onClick={() => setMenuOpen(false)}
+        className="block px-6 py-4 text-[#173926] font-medium border-t border-[#edf1ee] hover:bg-[#f7f5ef] transition-all duration-300"
+      >
+        Contact
+      </a>
+
+    </div>
+  </div>
+)}
       </header>
 
       
