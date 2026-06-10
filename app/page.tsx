@@ -410,7 +410,7 @@ if (loading) {
   )}
   <button
   onClick={() => setMenuOpen(!menuOpen)}
-  className="md:hidden ml-1 text-white text-2xl"
+  className="md:hidden text-white text-2xl"
 >
   ☰
 </button>
