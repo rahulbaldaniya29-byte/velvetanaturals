@@ -11,6 +11,7 @@ export default function HomePage() {
   const [cartCount, setCartCount] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 const [accountMenu, setAccountMenu] = useState(false);
   
 const [messageName, setMessageName] = useState('');
@@ -24,6 +25,41 @@ const [heroOffset, setHeroOffset] = useState({
   x: 0,
   y: 0,
 });
+useEffect(() => {
+  const handleOutsideClick = (event: Event) => {
+    if (
+      menuOpen &&
+      mobileMenuRef.current &&
+      !mobileMenuRef.current.contains(
+        event.target as Node
+      )
+    ) {
+      setMenuOpen(false);
+    }
+  };
+
+  document.addEventListener(
+    'mousedown',
+    handleOutsideClick
+  );
+
+  document.addEventListener(
+    'touchstart',
+    handleOutsideClick
+  );
+
+  return () => {
+    document.removeEventListener(
+      'mousedown',
+      handleOutsideClick
+    );
+
+    document.removeEventListener(
+      'touchstart',
+      handleOutsideClick
+    );
+  };
+}, [menuOpen]);
 useEffect(() => {
   const handleClickOutside = (event: Event) => {
     if (
@@ -423,7 +459,10 @@ if (loading) {
 
         {/* MOBILE MENU */}
         {menuOpen && (
-          <div className="mobile-menu md:hidden absolute top-full left-0 w-full px-4 pb-4 z-[9999]">
+          <div
+  ref={mobileMenuRef}
+  className="mobile-menu md:hidden absolute top-full left-0 w-full px-4 pb-4 z-[9999]"
+>
             <div className="bg-[#173926] border border-white/10 rounded-2xl p-4 flex flex-col gap-4 text-white shadow-xl">
               <a
   href="#home"
