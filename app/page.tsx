@@ -25,7 +25,7 @@ const [heroOffset, setHeroOffset] = useState({
   y: 0,
 });
 useEffect(() => {
-  const handleClickOutside = (event: MouseEvent) => {
+  const handleClickOutside = (event: Event) => {
     if (
       accountMenuRef.current &&
       !accountMenuRef.current.contains(
@@ -41,9 +41,19 @@ useEffect(() => {
     handleClickOutside
   );
 
+  document.addEventListener(
+    'touchstart',
+    handleClickOutside
+  );
+
   return () => {
     document.removeEventListener(
       'mousedown',
+      handleClickOutside
+    );
+
+    document.removeEventListener(
+      'touchstart',
       handleClickOutside
     );
   };
